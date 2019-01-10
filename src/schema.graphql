@@ -1,3 +1,54 @@
+scalar Date
+
 type Query {
   info: String!
+}
+
+type Publisher {
+  id: ID!
+  name: String!
+  about: String
+  address: String
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type User {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  books: [Book!]
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type Book {
+  id: ID!
+  title: String!
+  description: String
+  publishers: [Publisher!]!
+  pages: Int
+  publishDate: Date!
+  authors: [User!]!
+  ratings: [Rating!]
+  isbnNo: Int
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type Review {
+  id: ID!
+  review: String!
+  reviewer: User!
+  book: Book!
+  createdAt: Date!
+}
+
+type Rating {
+  id: ID!
+  rating: Int!
+  rater: User!
+  book: Book!
+  createdAt: Date!
 }
