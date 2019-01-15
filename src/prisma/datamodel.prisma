@@ -1,11 +1,5 @@
-scalar DateTime
-
-type Query {
-  info: String!
-}
-
 type Publisher {
-  id: ID!
+  id: ID! @unique
   name: String!
   about: String
   address: String
@@ -15,10 +9,11 @@ type Publisher {
 }
 
 type User {
-  id: ID!
+  id: ID! @unique
   firstName: String!
   lastName: String!
-  email: String!
+  email: String! @unique
+  password: String!
   books: [Book!]
   reviews: [Review!]
   createdAt: DateTime!
@@ -26,7 +21,7 @@ type User {
 }
 
 type Book {
-  id: ID!
+  id: ID! @unique
   title: String!
   description: String
   publishers: [Publisher!]!
@@ -40,7 +35,7 @@ type Book {
 }
 
 type Review {
-  id: ID!
+  id: ID! @unique
   review: String!
   reviewer: User!
   book: Book!
@@ -48,7 +43,7 @@ type Review {
 }
 
 type Rating {
-  id: ID!
+  id: ID! @unique
   rating: Int!
   rater: User!
   book: Book!
