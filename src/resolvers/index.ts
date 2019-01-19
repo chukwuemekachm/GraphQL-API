@@ -1,5 +1,7 @@
+import Query from './Query';
+import Mutation from './Mutation'
+
 export default {
-  Query: {
-    info: () => 'Welcome to my GraphQL API! 🚀 🚀'
-  }
+  Query,
+  Mutation,
 };
