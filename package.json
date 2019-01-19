@@ -22,12 +22,16 @@
   },
   "homepage": "https://github.com/chukwuemekachm/GraphQL-API#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "class-validator": "^0.9.1",
     "graphql-yoga": "^1.16.9",
+    "jsonwebtoken": "^8.4.0",
     "merge-graphql-schemas": "^1.5.8",
     "prisma-client-lib": "^1.24.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
+    "@types/jsonwebtoken": "^8.3.0",
     "@types/ws": "^6.0.1",
     "nodemon": "^1.18.9",
     "ts-node": "^7.0.1",
