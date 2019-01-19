@@ -1,10 +1,12 @@
 import { GraphQLServer } from 'graphql-yoga';
+import * as dotenv from 'dotenv';
 
-import { prisma} from './prisma/generated/prisma-client/index';
+import { prisma } from './prisma/generated/prisma-client/index';
 import resolvers from './resolvers';
 import errorFormater from './helpers/errorFormater';
 import { GraphQLError } from 'graphql';
 
+dotenv.config();
 const PORT = process.env.PORT || 4000;
 
 const server = new GraphQLServer({
@@ -23,5 +25,5 @@ server.start(
     playground: process.env.NODE_ENV !== 'production' ? '/playground' : false,
     formatError: (error: GraphQLError) => errorFormater(error),
   },
-  () => console.log(`Server is running on http://localhost:${PORT} 🚀`)
+  () => console.log(`Server is running on http://localhost:${PORT} 🚀`),
 );

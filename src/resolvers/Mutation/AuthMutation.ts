@@ -1,9 +1,11 @@
-import { IAuthMutation } from "../../types/IAuthMutation";
-import { IContext } from "../../types/IContext";
-import { generateToken } from "../../helpers/jwtHelper";
-import validateRequest, { validationMessage } from "../../validators";
-import { UserValidator } from "../../validators/UserValidator";
-import FormatedError from "../../errors/FormatedError";
+import * as bcrypt from 'bcryptjs';
+
+import { IAuthMutation } from '../../types/IAuthMutation';
+import { IContext } from '../../types/IContext';
+import { generateToken } from '../../helpers/jwtHelper';
+import validateRequest, { validationMessage } from '../../validators';
+import { UserValidator } from '../../validators/UserValidator';
+import FormatedError from '../../errors/FormatedError';
 
 class AuthMutation implements IAuthMutation {
   /**
@@ -15,19 +17,24 @@ class AuthMutation implements IAuthMutation {
    * @param {object} context The request context
    *
    * @returns {object}
-  */
-  public static signup = async (parent: any, args: any, { prisma }: IContext) => {
+   */
+  public static signup = async (
+    parent: any,
+    { user: userInput }: any,
+    { prisma }: IContext,
+  ) => {
     try {
-      const { firstName, lastName, email, password } = args.user;
-      const errors = await validateRequest(UserValidator, args.user);
+      const { firstName, lastName, email, password } = userInput;
+      const errors = await validateRequest(UserValidator, userInput);
       if (errors) {
         throw new FormatedError(validationMessage, errors);
       }
       const user = await prisma.user({ email });
       if (!user) {
+        const passwordHash = await bcrypt.hash(password, 10);
         const newUser = await prisma.createUser({
           email,
-          password,
+          password: passwordHash,
           firstName,
           lastName,
         });
@@ -38,11 +45,13 @@ class AuthMutation implements IAuthMutation {
           User: newUser,
         };
       }
-      throw new FormatedError('User with email exists', { email: [`A user with your email: ${email} already exists`] });
+      throw new FormatedError('User with email exists', {
+        email: [`A user with your email: ${email} already exists`],
+      });
     } catch (err) {
       throw err;
     }
-  }
+  };
 }
 
 export default AuthMutation;
