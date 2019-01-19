@@ -4,6 +4,22 @@ type Query {
   info: String!
 }
 
+type Mutation {
+  signup(user: UserInput): SignupResponse!
+}
+
+type SignupResponse {
+  token: String!
+  User: User!
+}
+
+input UserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
 type Publisher {
   id: ID!
   name: String!
