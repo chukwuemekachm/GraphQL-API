@@ -29,6 +29,7 @@ class AuthMutation implements IAuthMutation {
       if (errors) {
         throw new FormatedError(validationMessage, errors);
       }
+
       const user = await prisma.user({ email });
       if (!user) {
         const passwordHash = await bcrypt.hash(password, 10);
@@ -48,6 +49,49 @@ class AuthMutation implements IAuthMutation {
       throw new FormatedError('User with email exists', {
         email: [`A user with your email: ${email} already exists`],
       });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  /**
+   * @description Login's in a user on the platform
+   * Returning the user's token and profile
+   *
+   * @param {object} parent The previous GraphQL object
+   * @param {object} args The request payload
+   * @param {object} context The request context
+   *
+   * @returns {object}
+   */
+  public static login = async (
+    parent: any,
+    { user: userInput }: any,
+    { prisma }: IContext,
+  ) => {
+    try {
+      const { email, password } = userInput;
+      const user = await prisma.user({ email });
+      if (!user) {
+        throw new FormatedError('Invaild credentials', {
+          email: ['Invalid email or password'],
+          password: ['Invalid email or password'],
+        });
+      }
+
+      const valid = await bcrypt.compare(password, user.password);
+      if (!valid) {
+        throw new FormatedError('Invaild credentials', {
+          email: ['Invalid email or password'],
+          password: ['Invalid email or password'],
+        });
+      }
+      const token = generateToken({ email, id: user.id });
+
+      return {
+        token,
+        User: user,
+      };
     } catch (err) {
       throw err;
     }
