@@ -5,17 +5,23 @@ type Query {
 }
 
 type Mutation {
-  signup(user: UserInput): SignupResponse!
+  signup(user: SignupInput): AuthResponse!
+  login(user: LoginInput): AuthResponse!
 }
 
-type SignupResponse {
+type AuthResponse {
   token: String!
   User: User!
 }
 
-input UserInput {
+input SignupInput {
   firstName: String!
   lastName: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
   email: String!
   password: String!
 }
