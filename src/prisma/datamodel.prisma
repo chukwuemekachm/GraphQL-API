@@ -1,5 +1,5 @@
-type Publisher {
-  id: ID! @unique
+type Publisher @db(name: "publisher") {
+  id: ID! @id(strategy: AUTO) @unique
   name: String!
   about: String
   address: String
@@ -8,8 +8,8 @@ type Publisher {
   updatedAt: DateTime!
 }
 
-type User {
-  id: ID! @unique
+type User @db(name: "user") {
+  id: ID! @id(strategy: AUTO) @unique
   firstName: String!
   lastName: String!
   email: String! @unique
@@ -20,8 +20,8 @@ type User {
   updatedAt: DateTime!
 }
 
-type Book {
-  id: ID! @unique
+type Book @db(name: "book") {
+  id: ID! @id(strategy: AUTO) @unique
   title: String!
   description: String
   publishers: [Publisher!]!
@@ -34,16 +34,16 @@ type Book {
   updatedAt: DateTime!
 }
 
-type Review {
-  id: ID! @unique
+type Review @db(name: "review") {
+  id: ID! @id(strategy: AUTO) @unique
   review: String!
   reviewer: User!
   book: Book!
   createdAt: DateTime!
 }
 
-type Rating {
-  id: ID! @unique
+type Rating @db(name: "rating") {
+  id: ID! @id(strategy: AUTO) @unique
   rating: Int!
   rater: User!
   book: Book!

@@ -2,13 +2,13 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode } from "graphql";
+import { DocumentNode } from 'graphql';
 import {
   makePrismaClientClass,
   BaseClientOptions,
-  Model
-} from "prisma-client-lib";
-import { typeDefs } from "./prisma-schema";
+  Model,
+} from 'prisma-client-lib';
+import { typeDefs } from './prisma-schema';
 
 export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
@@ -33,7 +33,7 @@ export interface Prisma {
   $exists: Exists;
   $graphql: <T = any>(
     query: string,
-    variables?: { [key: string]: any }
+    variables?: { [key: string]: any },
   ) => Promise<T>;
 
   /**
@@ -50,7 +50,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<Book>;
   booksConnection: (
     args?: {
@@ -61,7 +61,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => BookConnectionPromise;
   publisher: (where: PublisherWhereUniqueInput) => PublisherPromise;
   publishers: (
@@ -73,7 +73,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<Publisher>;
   publishersConnection: (
     args?: {
@@ -84,7 +84,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => PublisherConnectionPromise;
   rating: (where: RatingWhereUniqueInput) => RatingPromise;
   ratings: (
@@ -96,7 +96,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<Rating>;
   ratingsConnection: (
     args?: {
@@ -107,7 +107,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => RatingConnectionPromise;
   review: (where: ReviewWhereUniqueInput) => ReviewPromise;
   reviews: (
@@ -119,7 +119,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<Review>;
   reviewsConnection: (
     args?: {
@@ -130,7 +130,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => ReviewConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
@@ -142,7 +142,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<User>;
   usersConnection: (
     args?: {
@@ -153,7 +153,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => UserConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
@@ -163,84 +163,84 @@ export interface Prisma {
 
   createBook: (data: BookCreateInput) => BookPromise;
   updateBook: (
-    args: { data: BookUpdateInput; where: BookWhereUniqueInput }
+    args: { data: BookUpdateInput; where: BookWhereUniqueInput },
   ) => BookPromise;
   updateManyBooks: (
-    args: { data: BookUpdateManyMutationInput; where?: BookWhereInput }
+    args: { data: BookUpdateManyMutationInput; where?: BookWhereInput },
   ) => BatchPayloadPromise;
   upsertBook: (
     args: {
       where: BookWhereUniqueInput;
       create: BookCreateInput;
       update: BookUpdateInput;
-    }
+    },
   ) => BookPromise;
   deleteBook: (where: BookWhereUniqueInput) => BookPromise;
   deleteManyBooks: (where?: BookWhereInput) => BatchPayloadPromise;
   createPublisher: (data: PublisherCreateInput) => PublisherPromise;
   updatePublisher: (
-    args: { data: PublisherUpdateInput; where: PublisherWhereUniqueInput }
+    args: { data: PublisherUpdateInput; where: PublisherWhereUniqueInput },
   ) => PublisherPromise;
   updateManyPublishers: (
     args: {
       data: PublisherUpdateManyMutationInput;
       where?: PublisherWhereInput;
-    }
+    },
   ) => BatchPayloadPromise;
   upsertPublisher: (
     args: {
       where: PublisherWhereUniqueInput;
       create: PublisherCreateInput;
       update: PublisherUpdateInput;
-    }
+    },
   ) => PublisherPromise;
   deletePublisher: (where: PublisherWhereUniqueInput) => PublisherPromise;
   deleteManyPublishers: (where?: PublisherWhereInput) => BatchPayloadPromise;
   createRating: (data: RatingCreateInput) => RatingPromise;
   updateRating: (
-    args: { data: RatingUpdateInput; where: RatingWhereUniqueInput }
+    args: { data: RatingUpdateInput; where: RatingWhereUniqueInput },
   ) => RatingPromise;
   updateManyRatings: (
-    args: { data: RatingUpdateManyMutationInput; where?: RatingWhereInput }
+    args: { data: RatingUpdateManyMutationInput; where?: RatingWhereInput },
   ) => BatchPayloadPromise;
   upsertRating: (
     args: {
       where: RatingWhereUniqueInput;
       create: RatingCreateInput;
       update: RatingUpdateInput;
-    }
+    },
   ) => RatingPromise;
   deleteRating: (where: RatingWhereUniqueInput) => RatingPromise;
   deleteManyRatings: (where?: RatingWhereInput) => BatchPayloadPromise;
   createReview: (data: ReviewCreateInput) => ReviewPromise;
   updateReview: (
-    args: { data: ReviewUpdateInput; where: ReviewWhereUniqueInput }
+    args: { data: ReviewUpdateInput; where: ReviewWhereUniqueInput },
   ) => ReviewPromise;
   updateManyReviews: (
-    args: { data: ReviewUpdateManyMutationInput; where?: ReviewWhereInput }
+    args: { data: ReviewUpdateManyMutationInput; where?: ReviewWhereInput },
   ) => BatchPayloadPromise;
   upsertReview: (
     args: {
       where: ReviewWhereUniqueInput;
       create: ReviewCreateInput;
       update: ReviewUpdateInput;
-    }
+    },
   ) => ReviewPromise;
   deleteReview: (where: ReviewWhereUniqueInput) => ReviewPromise;
   deleteManyReviews: (where?: ReviewWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
+    args: { data: UserUpdateInput; where: UserWhereUniqueInput },
   ) => UserPromise;
   updateManyUsers: (
-    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput }
+    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput },
   ) => BatchPayloadPromise;
   upsertUser: (
     args: {
       where: UserWhereUniqueInput;
       create: UserCreateInput;
       update: UserUpdateInput;
-    }
+    },
   ) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
@@ -254,19 +254,19 @@ export interface Prisma {
 
 export interface Subscription {
   book: (
-    where?: BookSubscriptionWhereInput
+    where?: BookSubscriptionWhereInput,
   ) => BookSubscriptionPayloadSubscription;
   publisher: (
-    where?: PublisherSubscriptionWhereInput
+    where?: PublisherSubscriptionWhereInput,
   ) => PublisherSubscriptionPayloadSubscription;
   rating: (
-    where?: RatingSubscriptionWhereInput
+    where?: RatingSubscriptionWhereInput,
   ) => RatingSubscriptionPayloadSubscription;
   review: (
-    where?: ReviewSubscriptionWhereInput
+    where?: ReviewSubscriptionWhereInput,
   ) => ReviewSubscriptionPayloadSubscription;
   user: (
-    where?: UserSubscriptionWhereInput
+    where?: UserSubscriptionWhereInput,
   ) => UserSubscriptionPayloadSubscription;
 }
 
@@ -279,74 +279,74 @@ export interface ClientConstructor<T> {
  */
 
 export type PublisherOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "about_ASC"
-  | "about_DESC"
-  | "address_ASC"
-  | "address_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
+  | 'about_ASC'
+  | 'about_DESC'
+  | 'address_ASC'
+  | 'address_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
 export type BookOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "description_ASC"
-  | "description_DESC"
-  | "pages_ASC"
-  | "pages_DESC"
-  | "publishDateTime_ASC"
-  | "publishDateTime_DESC"
-  | "isbnNo_ASC"
-  | "isbnNo_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'title_ASC'
+  | 'title_DESC'
+  | 'description_ASC'
+  | 'description_DESC'
+  | 'pages_ASC'
+  | 'pages_DESC'
+  | 'publishDateTime_ASC'
+  | 'publishDateTime_DESC'
+  | 'isbnNo_ASC'
+  | 'isbnNo_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
 export type UserOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "firstName_ASC"
-  | "firstName_DESC"
-  | "lastName_ASC"
-  | "lastName_DESC"
-  | "email_ASC"
-  | "email_DESC"
-  | "password_ASC"
-  | "password_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'firstName_ASC'
+  | 'firstName_DESC'
+  | 'lastName_ASC'
+  | 'lastName_DESC'
+  | 'email_ASC'
+  | 'email_DESC'
+  | 'password_ASC'
+  | 'password_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
 export type ReviewOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "review_ASC"
-  | "review_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'review_ASC'
+  | 'review_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
 export type RatingOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "rating_ASC"
-  | "rating_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'rating_ASC'
+  | 'rating_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
 
 export interface RatingUpdateManyWithoutBookInput {
   create?: RatingCreateWithoutBookInput[] | RatingCreateWithoutBookInput;
@@ -1779,7 +1779,7 @@ export interface PublisherPromise extends Promise<Publisher>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -1801,7 +1801,7 @@ export interface PublisherSubscription
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1873,7 +1873,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   reviews: <T = FragmentableArray<Review>>(
     args?: {
@@ -1884,7 +1884,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -1907,7 +1907,7 @@ export interface UserSubscription
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   reviews: <T = Promise<AsyncIterator<ReviewSubscription>>>(
     args?: {
@@ -1918,7 +1918,7 @@ export interface UserSubscription
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -2046,7 +2046,7 @@ export interface BookPromise extends Promise<Book>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   pages: () => Promise<Int>;
   publishDateTime: () => Promise<DateTimeOutput>;
@@ -2059,7 +2059,7 @@ export interface BookPromise extends Promise<Book>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   ratings: <T = FragmentableArray<Rating>>(
     args?: {
@@ -2070,7 +2070,7 @@ export interface BookPromise extends Promise<Book>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   isbnNo: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -2092,7 +2092,7 @@ export interface BookSubscription
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   pages: () => Promise<AsyncIterator<Int>>;
   publishDateTime: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -2105,7 +2105,7 @@ export interface BookSubscription
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   ratings: <T = Promise<AsyncIterator<RatingSubscription>>>(
     args?: {
@@ -2116,7 +2116,7 @@ export interface BookSubscription
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => T;
   isbnNo: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -2602,25 +2602,25 @@ export type String = string;
 
 export const models: Model[] = [
   {
-    name: "Book",
-    embedded: false
+    name: 'Book',
+    embedded: false,
   },
   {
-    name: "Publisher",
-    embedded: false
+    name: 'Publisher',
+    embedded: false,
   },
   {
-    name: "Rating",
-    embedded: false
+    name: 'Rating',
+    embedded: false,
   },
   {
-    name: "Review",
-    embedded: false
+    name: 'Review',
+    embedded: false,
   },
   {
-    name: "User",
-    embedded: false
-  }
+    name: 'User',
+    embedded: false,
+  },
 ];
 
 /**
@@ -2630,6 +2630,6 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `http://localhost:4467`
+  endpoint: `http://localhost:4466`,
 });
 export const prisma = new Prisma();
