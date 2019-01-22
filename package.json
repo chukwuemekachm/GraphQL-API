@@ -8,6 +8,8 @@
     "prestart": "npm run build",
     "start": "node dist/index.js",
     "dev": "nodemon --exec ts-node -- src/index.ts",
+    "docker": "docker-compose up -d",
+    "prisma": "prisma deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
