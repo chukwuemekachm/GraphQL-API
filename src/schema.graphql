@@ -11,7 +11,7 @@ type Mutation {
 
 type AuthResponse {
   token: String!
-  User: User!
+  user: User!
 }
 
 input SignupInput {

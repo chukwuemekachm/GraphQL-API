@@ -4,7 +4,7 @@ interface IPayload {
   [property: string]: any;
 }
 
-interface IValidationErrors {
+export interface IValidationErrors {
   [property: string]: string[];
 }
 
@@ -13,13 +13,13 @@ export const validationMessage: string = 'Some fields are failing validation';
 /**
  * @description Validates objects with key value pairs
  * And returns a false or errors object depending on the state
- * 
+ *
  * @param {object} Validator The validator schema to be used
  * @param {object} payload The object to be validated
  * @param {string} action The type of validation to be performed
- * 
+ *
  * @returns {boolean | object}
-*/
+ */
 const validateRequest = async (
   Validator: any,
   payload: IPayload,
@@ -29,7 +29,8 @@ const validateRequest = async (
   let validationErrors = {};
 
   Object.entries(payload).forEach(([key, value]) => {
-    resource[key] = typeof value === 'string' ? value.replace(/  +/g, '').trim() : value;
+    resource[key] =
+      typeof value === 'string' ? value.replace(/  +/g, '').trim() : value;
   });
 
   const errors = await validate(resource, {
@@ -44,11 +45,13 @@ const validateRequest = async (
   for (let error of errors) {
     validationErrors = {
       ...validationErrors,
-      [error.property]: Object.entries(error.constraints).map(([, value]) => value)
-    }
+      [error.property]: Object.entries(error.constraints).map(
+        ([, value]) => value,
+      ),
+    };
   }
 
   return validationErrors;
 };
 
-export default validateRequest
+export default validateRequest;
