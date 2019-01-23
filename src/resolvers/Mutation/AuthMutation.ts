@@ -3,9 +3,14 @@ import * as bcrypt from 'bcryptjs';
 import { IAuthMutation } from '../../types/IAuthMutation';
 import { IContext } from '../../types/IContext';
 import { generateToken } from '../../helpers/jwtHelper';
-import validateRequest, { validationMessage } from '../../validators';
+import validateRequest, {
+  validationMessage,
+  IValidationErrors,
+} from '../../validators';
 import { UserValidator } from '../../validators/UserValidator';
 import FormatedError from '../../errors/FormatedError';
+import { AuthResponse, User } from '../../types/types';
+import { MutationResolvers } from '../../types/graphqlgen';
 
 class AuthMutation implements IAuthMutation {
   /**
@@ -18,22 +23,25 @@ class AuthMutation implements IAuthMutation {
    *
    * @returns {object}
    */
-  public static signup = async (
-    parent: any,
+  public static signup: MutationResolvers.SignupResolver = async (
+    parent: undefined,
     { user: userInput }: any,
     { prisma }: IContext,
-  ) => {
+  ): Promise<AuthResponse> => {
     try {
       const { firstName, lastName, email, password } = userInput;
-      const errors = await validateRequest(UserValidator, userInput);
+      const errors: IValidationErrors | boolean = await validateRequest(
+        UserValidator,
+        userInput,
+      );
       if (errors) {
         throw new FormatedError(validationMessage, errors);
       }
 
       const user = await prisma.user({ email });
       if (!user) {
-        const passwordHash = await bcrypt.hash(password, 10);
-        const newUser = await prisma.createUser({
+        const passwordHash: string = await bcrypt.hash(password, 10);
+        const newUser: Partial<User> = await prisma.createUser({
           email,
           password: passwordHash,
           firstName,
@@ -43,7 +51,7 @@ class AuthMutation implements IAuthMutation {
 
         return {
           token,
-          User: newUser,
+          user: newUser,
         };
       }
       throw new FormatedError('User with email exists', {
@@ -64,14 +72,14 @@ class AuthMutation implements IAuthMutation {
    *
    * @returns {object}
    */
-  public static login = async (
-    parent: any,
+  public static login: MutationResolvers.LoginResolver = async (
+    parent: undefined,
     { user: userInput }: any,
     { prisma }: IContext,
-  ) => {
+  ): Promise<AuthResponse> => {
     try {
       const { email, password } = userInput;
-      const user = await prisma.user({ email });
+      const user: Partial<User> = await prisma.user({ email });
       if (!user) {
         throw new FormatedError('Invaild credentials', {
           email: ['Invalid email or password'],
@@ -79,7 +87,7 @@ class AuthMutation implements IAuthMutation {
         });
       }
 
-      const valid = await bcrypt.compare(password, user.password);
+      const valid = await bcrypt.compare(password, <string>user.password);
       if (!valid) {
         throw new FormatedError('Invaild credentials', {
           email: ['Invalid email or password'],
@@ -90,7 +98,7 @@ class AuthMutation implements IAuthMutation {
 
       return {
         token,
-        User: user,
+        user: user,
       };
     } catch (err) {
       throw err;

@@ -1,7 +1,10 @@
 import Query from './Query';
-import Mutation from './Mutation'
+import Mutation from './Mutation';
+import { Resolvers } from '../types/graphqlgen';
 
-export default {
+const resolvers: Partial<Resolvers> = {
   Query,
   Mutation,
 };
+
+export default resolvers;
