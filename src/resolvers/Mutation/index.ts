@@ -2,6 +2,7 @@ import AuthMutation from './AuthMutation';
 import { IContext } from '../../types/IContext';
 import { MutationResolvers } from '../../types/graphqlgen';
 import { GraphQLResolveInfo } from 'graphql';
+import PublisherMutation from './PublisherMutation';
 
 const mutation: MutationResolvers.Type = {
   signup: (
@@ -16,6 +17,12 @@ const mutation: MutationResolvers.Type = {
     context: IContext,
     info: GraphQLResolveInfo,
   ) => AuthMutation.login(parent, args, context, info),
+  createPublisher: (
+    parent: undefined,
+    args: any,
+    context: IContext,
+    info: GraphQLResolveInfo,
+  ) => PublisherMutation.createPublisher(parent, args, context, info),
 };
 
 export default mutation;
