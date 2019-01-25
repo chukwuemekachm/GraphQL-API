@@ -31,6 +31,7 @@ type Book {
   publishDateTime: DateTime!
   authors(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   ratings(where: RatingWhereInput, orderBy: RatingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Rating!]
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   isbnNo: Int
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -50,6 +51,7 @@ input BookCreateInput {
   publishDateTime: DateTime!
   authors: UserCreateManyWithoutBooksInput
   ratings: RatingCreateManyWithoutBookInput
+  reviews: ReviewCreateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -63,13 +65,13 @@ input BookCreateManyWithoutPublishersInput {
   connect: [BookWhereUniqueInput!]
 }
 
-input BookCreateOneInput {
-  create: BookCreateInput
+input BookCreateOneWithoutRatingsInput {
+  create: BookCreateWithoutRatingsInput
   connect: BookWhereUniqueInput
 }
 
-input BookCreateOneWithoutRatingsInput {
-  create: BookCreateWithoutRatingsInput
+input BookCreateOneWithoutReviewsInput {
+  create: BookCreateWithoutReviewsInput
   connect: BookWhereUniqueInput
 }
 
@@ -80,6 +82,7 @@ input BookCreateWithoutAuthorsInput {
   pages: Int
   publishDateTime: DateTime!
   ratings: RatingCreateManyWithoutBookInput
+  reviews: ReviewCreateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -90,6 +93,7 @@ input BookCreateWithoutPublishersInput {
   publishDateTime: DateTime!
   authors: UserCreateManyWithoutBooksInput
   ratings: RatingCreateManyWithoutBookInput
+  reviews: ReviewCreateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -100,6 +104,18 @@ input BookCreateWithoutRatingsInput {
   pages: Int
   publishDateTime: DateTime!
   authors: UserCreateManyWithoutBooksInput
+  reviews: ReviewCreateManyWithoutBookInput
+  isbnNo: Int
+}
+
+input BookCreateWithoutReviewsInput {
+  title: String!
+  description: String
+  publishers: PublisherCreateManyWithoutPublicationInput
+  pages: Int
+  publishDateTime: DateTime!
+  authors: UserCreateManyWithoutBooksInput
+  ratings: RatingCreateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -244,17 +260,6 @@ input BookSubscriptionWhereInput {
   NOT: [BookSubscriptionWhereInput!]
 }
 
-input BookUpdateDataInput {
-  title: String
-  description: String
-  publishers: PublisherUpdateManyWithoutPublicationInput
-  pages: Int
-  publishDateTime: DateTime
-  authors: UserUpdateManyWithoutBooksInput
-  ratings: RatingUpdateManyWithoutBookInput
-  isbnNo: Int
-}
-
 input BookUpdateInput {
   title: String
   description: String
@@ -263,6 +268,7 @@ input BookUpdateInput {
   publishDateTime: DateTime
   authors: UserUpdateManyWithoutBooksInput
   ratings: RatingUpdateManyWithoutBookInput
+  reviews: ReviewUpdateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -309,17 +315,17 @@ input BookUpdateManyWithWhereNestedInput {
   data: BookUpdateManyDataInput!
 }
 
-input BookUpdateOneRequiredInput {
-  create: BookCreateInput
-  update: BookUpdateDataInput
-  upsert: BookUpsertNestedInput
-  connect: BookWhereUniqueInput
-}
-
 input BookUpdateOneRequiredWithoutRatingsInput {
   create: BookCreateWithoutRatingsInput
   update: BookUpdateWithoutRatingsDataInput
   upsert: BookUpsertWithoutRatingsInput
+  connect: BookWhereUniqueInput
+}
+
+input BookUpdateOneRequiredWithoutReviewsInput {
+  create: BookCreateWithoutReviewsInput
+  update: BookUpdateWithoutReviewsDataInput
+  upsert: BookUpsertWithoutReviewsInput
   connect: BookWhereUniqueInput
 }
 
@@ -330,6 +336,7 @@ input BookUpdateWithoutAuthorsDataInput {
   pages: Int
   publishDateTime: DateTime
   ratings: RatingUpdateManyWithoutBookInput
+  reviews: ReviewUpdateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -340,6 +347,7 @@ input BookUpdateWithoutPublishersDataInput {
   publishDateTime: DateTime
   authors: UserUpdateManyWithoutBooksInput
   ratings: RatingUpdateManyWithoutBookInput
+  reviews: ReviewUpdateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -350,6 +358,18 @@ input BookUpdateWithoutRatingsDataInput {
   pages: Int
   publishDateTime: DateTime
   authors: UserUpdateManyWithoutBooksInput
+  reviews: ReviewUpdateManyWithoutBookInput
+  isbnNo: Int
+}
+
+input BookUpdateWithoutReviewsDataInput {
+  title: String
+  description: String
+  publishers: PublisherUpdateManyWithoutPublicationInput
+  pages: Int
+  publishDateTime: DateTime
+  authors: UserUpdateManyWithoutBooksInput
+  ratings: RatingUpdateManyWithoutBookInput
   isbnNo: Int
 }
 
@@ -363,14 +383,14 @@ input BookUpdateWithWhereUniqueWithoutPublishersInput {
   data: BookUpdateWithoutPublishersDataInput!
 }
 
-input BookUpsertNestedInput {
-  update: BookUpdateDataInput!
-  create: BookCreateInput!
-}
-
 input BookUpsertWithoutRatingsInput {
   update: BookUpdateWithoutRatingsDataInput!
   create: BookCreateWithoutRatingsInput!
+}
+
+input BookUpsertWithoutReviewsInput {
+  update: BookUpdateWithoutReviewsDataInput!
+  create: BookCreateWithoutReviewsInput!
 }
 
 input BookUpsertWithWhereUniqueWithoutAuthorsInput {
@@ -453,6 +473,9 @@ input BookWhereInput {
   ratings_every: RatingWhereInput
   ratings_some: RatingWhereInput
   ratings_none: RatingWhereInput
+  reviews_every: ReviewWhereInput
+  reviews_some: ReviewWhereInput
+  reviews_none: ReviewWhereInput
   isbnNo: Int
   isbnNo_not: Int
   isbnNo_in: [Int!]
@@ -487,6 +510,12 @@ input BookWhereUniqueInput {
 }
 
 scalar DateTime
+
+enum EnumUserRole {
+  USER
+  ADMIN
+  AUTHOR
+}
 
 scalar Long
 
@@ -871,7 +900,7 @@ type RatingConnection {
 
 input RatingCreateInput {
   rating: Int!
-  rater: UserCreateOneInput!
+  rater: UserCreateOneWithoutRatingsInput!
   book: BookCreateOneWithoutRatingsInput!
 }
 
@@ -880,9 +909,19 @@ input RatingCreateManyWithoutBookInput {
   connect: [RatingWhereUniqueInput!]
 }
 
+input RatingCreateManyWithoutRaterInput {
+  create: [RatingCreateWithoutRaterInput!]
+  connect: [RatingWhereUniqueInput!]
+}
+
 input RatingCreateWithoutBookInput {
   rating: Int!
-  rater: UserCreateOneInput!
+  rater: UserCreateOneWithoutRatingsInput!
+}
+
+input RatingCreateWithoutRaterInput {
+  rating: Int!
+  book: BookCreateOneWithoutRatingsInput!
 }
 
 type RatingEdge {
@@ -963,7 +1002,7 @@ input RatingSubscriptionWhereInput {
 
 input RatingUpdateInput {
   rating: Int
-  rater: UserUpdateOneRequiredInput
+  rater: UserUpdateOneRequiredWithoutRatingsInput
   book: BookUpdateOneRequiredWithoutRatingsInput
 }
 
@@ -986,6 +1025,17 @@ input RatingUpdateManyWithoutBookInput {
   updateMany: [RatingUpdateManyWithWhereNestedInput!]
 }
 
+input RatingUpdateManyWithoutRaterInput {
+  create: [RatingCreateWithoutRaterInput!]
+  delete: [RatingWhereUniqueInput!]
+  connect: [RatingWhereUniqueInput!]
+  disconnect: [RatingWhereUniqueInput!]
+  update: [RatingUpdateWithWhereUniqueWithoutRaterInput!]
+  upsert: [RatingUpsertWithWhereUniqueWithoutRaterInput!]
+  deleteMany: [RatingScalarWhereInput!]
+  updateMany: [RatingUpdateManyWithWhereNestedInput!]
+}
+
 input RatingUpdateManyWithWhereNestedInput {
   where: RatingScalarWhereInput!
   data: RatingUpdateManyDataInput!
@@ -993,7 +1043,12 @@ input RatingUpdateManyWithWhereNestedInput {
 
 input RatingUpdateWithoutBookDataInput {
   rating: Int
-  rater: UserUpdateOneRequiredInput
+  rater: UserUpdateOneRequiredWithoutRatingsInput
+}
+
+input RatingUpdateWithoutRaterDataInput {
+  rating: Int
+  book: BookUpdateOneRequiredWithoutRatingsInput
 }
 
 input RatingUpdateWithWhereUniqueWithoutBookInput {
@@ -1001,10 +1056,21 @@ input RatingUpdateWithWhereUniqueWithoutBookInput {
   data: RatingUpdateWithoutBookDataInput!
 }
 
+input RatingUpdateWithWhereUniqueWithoutRaterInput {
+  where: RatingWhereUniqueInput!
+  data: RatingUpdateWithoutRaterDataInput!
+}
+
 input RatingUpsertWithWhereUniqueWithoutBookInput {
   where: RatingWhereUniqueInput!
   update: RatingUpdateWithoutBookDataInput!
   create: RatingCreateWithoutBookInput!
+}
+
+input RatingUpsertWithWhereUniqueWithoutRaterInput {
+  where: RatingWhereUniqueInput!
+  update: RatingUpdateWithoutRaterDataInput!
+  create: RatingCreateWithoutRaterInput!
 }
 
 input RatingWhereInput {
@@ -1066,7 +1132,12 @@ type ReviewConnection {
 input ReviewCreateInput {
   review: String!
   reviewer: UserCreateOneWithoutReviewsInput!
-  book: BookCreateOneInput!
+  book: BookCreateOneWithoutReviewsInput!
+}
+
+input ReviewCreateManyWithoutBookInput {
+  create: [ReviewCreateWithoutBookInput!]
+  connect: [ReviewWhereUniqueInput!]
 }
 
 input ReviewCreateManyWithoutReviewerInput {
@@ -1074,9 +1145,14 @@ input ReviewCreateManyWithoutReviewerInput {
   connect: [ReviewWhereUniqueInput!]
 }
 
+input ReviewCreateWithoutBookInput {
+  review: String!
+  reviewer: UserCreateOneWithoutReviewsInput!
+}
+
 input ReviewCreateWithoutReviewerInput {
   review: String!
-  book: BookCreateOneInput!
+  book: BookCreateOneWithoutReviewsInput!
 }
 
 type ReviewEdge {
@@ -1164,7 +1240,7 @@ input ReviewSubscriptionWhereInput {
 input ReviewUpdateInput {
   review: String
   reviewer: UserUpdateOneRequiredWithoutReviewsInput
-  book: BookUpdateOneRequiredInput
+  book: BookUpdateOneRequiredWithoutReviewsInput
 }
 
 input ReviewUpdateManyDataInput {
@@ -1173,6 +1249,17 @@ input ReviewUpdateManyDataInput {
 
 input ReviewUpdateManyMutationInput {
   review: String
+}
+
+input ReviewUpdateManyWithoutBookInput {
+  create: [ReviewCreateWithoutBookInput!]
+  delete: [ReviewWhereUniqueInput!]
+  connect: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutBookInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutBookInput!]
+  deleteMany: [ReviewScalarWhereInput!]
+  updateMany: [ReviewUpdateManyWithWhereNestedInput!]
 }
 
 input ReviewUpdateManyWithoutReviewerInput {
@@ -1191,14 +1278,30 @@ input ReviewUpdateManyWithWhereNestedInput {
   data: ReviewUpdateManyDataInput!
 }
 
+input ReviewUpdateWithoutBookDataInput {
+  review: String
+  reviewer: UserUpdateOneRequiredWithoutReviewsInput
+}
+
 input ReviewUpdateWithoutReviewerDataInput {
   review: String
-  book: BookUpdateOneRequiredInput
+  book: BookUpdateOneRequiredWithoutReviewsInput
+}
+
+input ReviewUpdateWithWhereUniqueWithoutBookInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutBookDataInput!
 }
 
 input ReviewUpdateWithWhereUniqueWithoutReviewerInput {
   where: ReviewWhereUniqueInput!
   data: ReviewUpdateWithoutReviewerDataInput!
+}
+
+input ReviewUpsertWithWhereUniqueWithoutBookInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutBookDataInput!
+  create: ReviewCreateWithoutBookInput!
 }
 
 input ReviewUpsertWithWhereUniqueWithoutReviewerInput {
@@ -1267,10 +1370,12 @@ type User {
   id: ID!
   firstName: String!
   lastName: String!
+  type: EnumUserRole
   email: String!
-  password: String!
+  password: String
   books(where: BookWhereInput, orderBy: BookOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Book!]
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  ratings(where: RatingWhereInput, orderBy: RatingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Rating!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1284,10 +1389,12 @@ type UserConnection {
 input UserCreateInput {
   firstName: String!
   lastName: String!
+  type: EnumUserRole
   email: String!
-  password: String!
+  password: String
   books: BookCreateManyWithoutAuthorsInput
   reviews: ReviewCreateManyWithoutReviewerInput
+  ratings: RatingCreateManyWithoutRaterInput
 }
 
 input UserCreateManyWithoutBooksInput {
@@ -1295,8 +1402,8 @@ input UserCreateManyWithoutBooksInput {
   connect: [UserWhereUniqueInput!]
 }
 
-input UserCreateOneInput {
-  create: UserCreateInput
+input UserCreateOneWithoutRatingsInput {
+  create: UserCreateWithoutRatingsInput
   connect: UserWhereUniqueInput
 }
 
@@ -1308,17 +1415,31 @@ input UserCreateOneWithoutReviewsInput {
 input UserCreateWithoutBooksInput {
   firstName: String!
   lastName: String!
+  type: EnumUserRole
   email: String!
-  password: String!
+  password: String
+  reviews: ReviewCreateManyWithoutReviewerInput
+  ratings: RatingCreateManyWithoutRaterInput
+}
+
+input UserCreateWithoutRatingsInput {
+  firstName: String!
+  lastName: String!
+  type: EnumUserRole
+  email: String!
+  password: String
+  books: BookCreateManyWithoutAuthorsInput
   reviews: ReviewCreateManyWithoutReviewerInput
 }
 
 input UserCreateWithoutReviewsInput {
   firstName: String!
   lastName: String!
+  type: EnumUserRole
   email: String!
-  password: String!
+  password: String
   books: BookCreateManyWithoutAuthorsInput
+  ratings: RatingCreateManyWithoutRaterInput
 }
 
 type UserEdge {
@@ -1333,6 +1454,8 @@ enum UserOrderByInput {
   firstName_DESC
   lastName_ASC
   lastName_DESC
+  type_ASC
+  type_DESC
   email_ASC
   email_DESC
   password_ASC
@@ -1347,8 +1470,9 @@ type UserPreviousValues {
   id: ID!
   firstName: String!
   lastName: String!
+  type: EnumUserRole
   email: String!
-  password: String!
+  password: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1396,6 +1520,10 @@ input UserScalarWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
+  type: EnumUserRole
+  type_not: EnumUserRole
+  type_in: [EnumUserRole!]
+  type_not_in: [EnumUserRole!]
   email: String
   email_not: String
   email_in: [String!]
@@ -1463,27 +1591,21 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  firstName: String
-  lastName: String
-  email: String
-  password: String
-  books: BookUpdateManyWithoutAuthorsInput
-  reviews: ReviewUpdateManyWithoutReviewerInput
-}
-
 input UserUpdateInput {
   firstName: String
   lastName: String
+  type: EnumUserRole
   email: String
   password: String
   books: BookUpdateManyWithoutAuthorsInput
   reviews: ReviewUpdateManyWithoutReviewerInput
+  ratings: RatingUpdateManyWithoutRaterInput
 }
 
 input UserUpdateManyDataInput {
   firstName: String
   lastName: String
+  type: EnumUserRole
   email: String
   password: String
 }
@@ -1491,6 +1613,7 @@ input UserUpdateManyDataInput {
 input UserUpdateManyMutationInput {
   firstName: String
   lastName: String
+  type: EnumUserRole
   email: String
   password: String
 }
@@ -1511,10 +1634,10 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
-input UserUpdateOneRequiredInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
+input UserUpdateOneRequiredWithoutRatingsInput {
+  create: UserCreateWithoutRatingsInput
+  update: UserUpdateWithoutRatingsDataInput
+  upsert: UserUpsertWithoutRatingsInput
   connect: UserWhereUniqueInput
 }
 
@@ -1528,17 +1651,31 @@ input UserUpdateOneRequiredWithoutReviewsInput {
 input UserUpdateWithoutBooksDataInput {
   firstName: String
   lastName: String
+  type: EnumUserRole
   email: String
   password: String
+  reviews: ReviewUpdateManyWithoutReviewerInput
+  ratings: RatingUpdateManyWithoutRaterInput
+}
+
+input UserUpdateWithoutRatingsDataInput {
+  firstName: String
+  lastName: String
+  type: EnumUserRole
+  email: String
+  password: String
+  books: BookUpdateManyWithoutAuthorsInput
   reviews: ReviewUpdateManyWithoutReviewerInput
 }
 
 input UserUpdateWithoutReviewsDataInput {
   firstName: String
   lastName: String
+  type: EnumUserRole
   email: String
   password: String
   books: BookUpdateManyWithoutAuthorsInput
+  ratings: RatingUpdateManyWithoutRaterInput
 }
 
 input UserUpdateWithWhereUniqueWithoutBooksInput {
@@ -1546,9 +1683,9 @@ input UserUpdateWithWhereUniqueWithoutBooksInput {
   data: UserUpdateWithoutBooksDataInput!
 }
 
-input UserUpsertNestedInput {
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
+input UserUpsertWithoutRatingsInput {
+  update: UserUpdateWithoutRatingsDataInput!
+  create: UserCreateWithoutRatingsInput!
 }
 
 input UserUpsertWithoutReviewsInput {
@@ -1605,6 +1742,10 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
+  type: EnumUserRole
+  type_not: EnumUserRole
+  type_in: [EnumUserRole!]
+  type_not_in: [EnumUserRole!]
   email: String
   email_not: String
   email_in: [String!]
@@ -1639,6 +1780,9 @@ input UserWhereInput {
   reviews_every: ReviewWhereInput
   reviews_some: ReviewWhereInput
   reviews_none: ReviewWhereInput
+  ratings_every: RatingWhereInput
+  ratings_some: RatingWhereInput
+  ratings_none: RatingWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1664,4 +1808,4 @@ input UserWhereUniqueInput {
   id: ID
   email: String
 }
-`
+`;

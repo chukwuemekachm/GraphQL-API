@@ -651,6 +651,11 @@ export namespace MutationResolvers {
     about: string;
     address: string;
   }
+  export interface AuthorInput {
+    firstName: string;
+    lastName: string;
+    email: string;
+  }
 
   export interface ArgsSignup {
     user?: SignupInput | null;
@@ -662,6 +667,10 @@ export namespace MutationResolvers {
 
   export interface ArgsCreatePublisher {
     publisher?: PublisherInput | null;
+  }
+
+  export interface ArgsCreateAuthor {
+    user: AuthorInput;
   }
 
   export type SignupResolver = (
@@ -685,6 +694,13 @@ export namespace MutationResolvers {
     info: GraphQLResolveInfo,
   ) => Publisher | Promise<Publisher>;
 
+  export type CreateAuthorResolver = (
+    parent: undefined,
+    args: ArgsCreateAuthor,
+    ctx: IContext,
+    info: GraphQLResolveInfo,
+  ) => User | Promise<User>;
+
   export interface Type {
     signup: (
       parent: undefined,
@@ -706,6 +722,13 @@ export namespace MutationResolvers {
       ctx: IContext,
       info: GraphQLResolveInfo,
     ) => Publisher | Promise<Publisher>;
+
+    createAuthor: (
+      parent: undefined,
+      args: ArgsCreateAuthor,
+      ctx: IContext,
+      info: GraphQLResolveInfo,
+    ) => User | Promise<User>;
   }
 }
 

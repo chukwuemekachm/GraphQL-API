@@ -9,6 +9,7 @@ type Mutation {
   signup(user: SignupInput): AuthResponse!
   login(user: LoginInput): AuthResponse!
   createPublisher(publisher: PublisherInput): Publisher!
+  createAuthor(user: AuthorInput!): User!
 }
 
 type AuthResponse {
@@ -32,6 +33,12 @@ input PublisherInput {
   name: String!
   about: String!
   address: String!
+}
+
+input AuthorInput {
+  firstName: String!
+  lastName: String!
+  email: String!
 }
 
 input PublisherSearchPaginationOrderInput {

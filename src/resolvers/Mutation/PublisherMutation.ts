@@ -7,8 +7,9 @@ import validateRequest, {
 } from '../../validators';
 import { Publisher } from '../../prisma/generated/prisma-client';
 import { MutationResolvers } from '../../types/graphqlgen';
+import { IPublisherMutation } from '../../types/IPublisherMutation';
 
-class PublisherMutation {
+class PublisherMutation implements IPublisherMutation {
   /**
    * @description Creates a new publisher on the platform
    * Returning the newly created publisher
