@@ -1,10 +1,10 @@
 import { GraphQLServer } from 'graphql-yoga';
 import * as dotenv from 'dotenv';
+import { GraphQLError } from 'graphql';
 
 import { prisma } from './prisma/generated/prisma-client/index';
 import resolvers from './resolvers';
 import errorFormater from './helpers/errorFormater';
-import { GraphQLError } from 'graphql';
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
