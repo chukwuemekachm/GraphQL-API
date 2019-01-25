@@ -44,6 +44,11 @@ export namespace MutationResolvers {
     email: string;
     password: string;
   }
+  export interface PublisherInput {
+    name: string;
+    about: string;
+    address: string;
+  }
 
   export interface ArgsSignup {
     user?: SignupInput | null;
@@ -51,6 +56,10 @@ export namespace MutationResolvers {
 
   export interface ArgsLogin {
     user?: LoginInput | null;
+  }
+
+  export interface ArgsCreatePublisher {
+    publisher?: PublisherInput | null;
   }
 
   export type SignupResolver = (
@@ -67,6 +76,13 @@ export namespace MutationResolvers {
     info: GraphQLResolveInfo,
   ) => AuthResponse | Promise<AuthResponse>;
 
+  export type CreatePublisherResolver = (
+    parent: undefined,
+    args: ArgsCreatePublisher,
+    ctx: IContext,
+    info: GraphQLResolveInfo,
+  ) => Publisher | Promise<Publisher>;
+
   export interface Type {
     signup: (
       parent: undefined,
@@ -81,6 +97,13 @@ export namespace MutationResolvers {
       ctx: IContext,
       info: GraphQLResolveInfo,
     ) => AuthResponse | Promise<AuthResponse>;
+
+    createPublisher: (
+      parent: undefined,
+      args: ArgsCreatePublisher,
+      ctx: IContext,
+      info: GraphQLResolveInfo,
+    ) => Publisher | Promise<Publisher>;
   }
 }
 
@@ -693,10 +716,10 @@ export namespace ReviewResolvers {
 export interface Resolvers {
   Query: QueryResolvers.Type;
   Mutation: MutationResolvers.Type;
-  AuthResponse: AuthResponseResolvers.Type;
   User: UserResolvers.Type;
   Book: BookResolvers.Type;
   Publisher: PublisherResolvers.Type;
   Rating: RatingResolvers.Type;
   Review: ReviewResolvers.Type;
+  [key: string]: object;
 }

@@ -7,7 +7,7 @@ import { Publisher } from './Publisher';
 import { Review } from './Review';
 import { Rating } from './Rating';
 
-const resolvers: Partial<Resolvers> = {
+const resolvers: Resolvers = {
   Query,
   Mutation,
   User,
