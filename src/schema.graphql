@@ -2,6 +2,7 @@ scalar DateTime
 
 type Query {
   info: String!
+  getPublishers(sort: PublisherSearchPaginationOrderInput): [Publisher!]!
 }
 
 type Mutation {
@@ -31,6 +32,22 @@ input PublisherInput {
   name: String!
   about: String!
   address: String!
+}
+
+input PublisherSearchPaginationOrderInput {
+  search: String
+  orderBy: PublisherOrderBy
+  offset: Int
+  limit: Int
+}
+
+enum PublisherOrderBy {
+  name_ASC
+  name_DESC
+  about_ASC
+  about_DESC
+  createdAt_ASC
+  createdAt_DESC
 }
 
 type Publisher {
