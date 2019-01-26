@@ -1,3 +1,9 @@
+enum EnumUserRole {
+  USER
+  ADMIN
+  AUTHOR
+}
+
 type Publisher @db(name: "publisher") {
   id: ID! @id(strategy: AUTO) @unique
   name: String!
@@ -12,10 +18,12 @@ type User @db(name: "user") {
   id: ID! @id(strategy: AUTO) @unique
   firstName: String!
   lastName: String!
+  type: EnumUserRole @default(value: "USER")
   email: String! @unique
-  password: String!
+  password: String
   books: [Book!]
   reviews: [Review!]
+  ratings: [Rating!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -29,6 +37,7 @@ type Book @db(name: "book") {
   publishDateTime: DateTime!
   authors: [User!]!
   ratings: [Rating!]
+  reviews: [Review!]
   isbnNo: Int
   createdAt: DateTime!
   updatedAt: DateTime!

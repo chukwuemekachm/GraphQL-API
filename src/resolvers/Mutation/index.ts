@@ -3,6 +3,7 @@ import { IContext } from '../../types/IContext';
 import { MutationResolvers } from '../../types/graphqlgen';
 import { GraphQLResolveInfo } from 'graphql';
 import PublisherMutation from './PublisherMutation';
+import UserMutation from './UserMutation';
 
 const mutation: MutationResolvers.Type = {
   signup: (
@@ -23,6 +24,12 @@ const mutation: MutationResolvers.Type = {
     context: IContext,
     info: GraphQLResolveInfo,
   ) => PublisherMutation.createPublisher(parent, args, context, info),
+  createAuthor: (
+    parent: undefined,
+    args: any,
+    context: IContext,
+    info: GraphQLResolveInfo,
+  ) => UserMutation.createAuthor(parent, args, context, info),
 };
 
 export default mutation;

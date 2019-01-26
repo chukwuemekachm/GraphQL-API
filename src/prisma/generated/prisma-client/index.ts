@@ -278,6 +278,8 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type EnumUserRole = 'USER' | 'ADMIN' | 'AUTHOR';
+
 export type PublisherOrderByInput =
   | 'id_ASC'
   | 'id_DESC'
@@ -317,6 +319,8 @@ export type UserOrderByInput =
   | 'firstName_DESC'
   | 'lastName_ASC'
   | 'lastName_DESC'
+  | 'type_ASC'
+  | 'type_DESC'
   | 'email_ASC'
   | 'email_DESC'
   | 'password_ASC'
@@ -348,34 +352,18 @@ export type RatingOrderByInput =
 
 export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
 
-export interface RatingUpdateManyWithoutBookInput {
-  create?: RatingCreateWithoutBookInput[] | RatingCreateWithoutBookInput;
-  delete?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
-  connect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
-  disconnect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
-  update?:
-    | RatingUpdateWithWhereUniqueWithoutBookInput[]
-    | RatingUpdateWithWhereUniqueWithoutBookInput;
-  upsert?:
-    | RatingUpsertWithWhereUniqueWithoutBookInput[]
-    | RatingUpsertWithWhereUniqueWithoutBookInput;
-  deleteMany?: RatingScalarWhereInput[] | RatingScalarWhereInput;
-  updateMany?:
-    | RatingUpdateManyWithWhereNestedInput[]
-    | RatingUpdateManyWithWhereNestedInput;
+export interface ReviewUpdateWithoutReviewerDataInput {
+  review?: String;
+  book?: BookUpdateOneRequiredWithoutReviewsInput;
 }
 
 export type BookWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface UserUpdateDataInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  books?: BookUpdateManyWithoutAuthorsInput;
-  reviews?: ReviewUpdateManyWithoutReviewerInput;
+export interface RatingUpdateWithoutBookDataInput {
+  rating?: Int;
+  rater?: UserUpdateOneRequiredWithoutRatingsInput;
 }
 
 export interface UserWhereInput {
@@ -421,6 +409,10 @@ export interface UserWhereInput {
   lastName_not_starts_with?: String;
   lastName_ends_with?: String;
   lastName_not_ends_with?: String;
+  type?: EnumUserRole;
+  type_not?: EnumUserRole;
+  type_in?: EnumUserRole[] | EnumUserRole;
+  type_not_in?: EnumUserRole[] | EnumUserRole;
   email?: String;
   email_not?: String;
   email_in?: String[] | String;
@@ -455,6 +447,9 @@ export interface UserWhereInput {
   reviews_every?: ReviewWhereInput;
   reviews_some?: ReviewWhereInput;
   reviews_none?: ReviewWhereInput;
+  ratings_every?: RatingWhereInput;
+  ratings_some?: RatingWhereInput;
+  ratings_none?: RatingWhereInput;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -476,21 +471,11 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface BookUpdateManyWithoutAuthorsInput {
-  create?: BookCreateWithoutAuthorsInput[] | BookCreateWithoutAuthorsInput;
-  delete?: BookWhereUniqueInput[] | BookWhereUniqueInput;
-  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
-  disconnect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
-  update?:
-    | BookUpdateWithWhereUniqueWithoutAuthorsInput[]
-    | BookUpdateWithWhereUniqueWithoutAuthorsInput;
-  upsert?:
-    | BookUpsertWithWhereUniqueWithoutAuthorsInput[]
-    | BookUpsertWithWhereUniqueWithoutAuthorsInput;
-  deleteMany?: BookScalarWhereInput[] | BookScalarWhereInput;
-  updateMany?:
-    | BookUpdateManyWithWhereNestedInput[]
-    | BookUpdateManyWithWhereNestedInput;
+export interface UserUpdateOneRequiredWithoutRatingsInput {
+  create?: UserCreateWithoutRatingsInput;
+  update?: UserUpdateWithoutRatingsDataInput;
+  upsert?: UserUpsertWithoutRatingsInput;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface RatingWhereInput {
@@ -531,15 +516,50 @@ export interface RatingWhereInput {
   NOT?: RatingWhereInput[] | RatingWhereInput;
 }
 
+export interface PublisherUpdateWithWhereUniqueWithoutPublicationInput {
+  where: PublisherWhereUniqueInput;
+  data: PublisherUpdateWithoutPublicationDataInput;
+}
+
+export interface UserUpdateManyDataInput {
+  firstName?: String;
+  lastName?: String;
+  type?: EnumUserRole;
+  email?: String;
+  password?: String;
+}
+
+export interface PublisherUpdateWithoutPublicationDataInput {
+  name?: String;
+  about?: String;
+  address?: String;
+}
+
+export interface UserUpdateWithoutRatingsDataInput {
+  firstName?: String;
+  lastName?: String;
+  type?: EnumUserRole;
+  email?: String;
+  password?: String;
+  books?: BookUpdateManyWithoutAuthorsInput;
+  reviews?: ReviewUpdateManyWithoutReviewerInput;
+}
+
 export interface PublisherUpsertWithWhereUniqueWithoutPublicationInput {
   where: PublisherWhereUniqueInput;
   update: PublisherUpdateWithoutPublicationDataInput;
   create: PublisherCreateWithoutPublicationInput;
 }
 
-export interface BookUpdateWithWhereUniqueWithoutPublishersInput {
-  where: BookWhereUniqueInput;
-  data: BookUpdateWithoutPublishersDataInput;
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
 export interface PublisherScalarWhereInput {
@@ -620,33 +640,6 @@ export interface PublisherScalarWhereInput {
   NOT?: PublisherScalarWhereInput[] | PublisherScalarWhereInput;
 }
 
-export interface BookUpdateWithWhereUniqueWithoutAuthorsInput {
-  where: BookWhereUniqueInput;
-  data: BookUpdateWithoutAuthorsDataInput;
-}
-
-export interface PublisherUpdateManyWithWhereNestedInput {
-  where: PublisherScalarWhereInput;
-  data: PublisherUpdateManyDataInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface PublisherUpdateManyDataInput {
-  name?: String;
-  about?: String;
-  address?: String;
-}
-
 export interface ReviewSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -656,6 +649,36 @@ export interface ReviewSubscriptionWhereInput {
   AND?: ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput;
   OR?: ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput;
   NOT?: ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput;
+}
+
+export interface PublisherUpdateManyWithWhereNestedInput {
+  where: PublisherScalarWhereInput;
+  data: PublisherUpdateManyDataInput;
+}
+
+export interface PublisherSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PublisherWhereInput;
+  AND?: PublisherSubscriptionWhereInput[] | PublisherSubscriptionWhereInput;
+  OR?: PublisherSubscriptionWhereInput[] | PublisherSubscriptionWhereInput;
+  NOT?: PublisherSubscriptionWhereInput[] | PublisherSubscriptionWhereInput;
+}
+
+export interface PublisherUpdateManyDataInput {
+  name?: String;
+  about?: String;
+  address?: String;
+}
+
+export interface UserUpdateManyMutationInput {
+  firstName?: String;
+  lastName?: String;
+  type?: EnumUserRole;
+  email?: String;
+  password?: String;
 }
 
 export interface UserUpdateManyWithoutBooksInput {
@@ -675,15 +698,15 @@ export interface UserUpdateManyWithoutBooksInput {
     | UserUpdateManyWithWhereNestedInput;
 }
 
-export interface PublisherSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PublisherWhereInput;
-  AND?: PublisherSubscriptionWhereInput[] | PublisherSubscriptionWhereInput;
-  OR?: PublisherSubscriptionWhereInput[] | PublisherSubscriptionWhereInput;
-  NOT?: PublisherSubscriptionWhereInput[] | PublisherSubscriptionWhereInput;
+export interface UserCreateInput {
+  firstName: String;
+  lastName: String;
+  type?: EnumUserRole;
+  email: String;
+  password?: String;
+  books?: BookCreateManyWithoutAuthorsInput;
+  reviews?: ReviewCreateManyWithoutReviewerInput;
+  ratings?: RatingCreateManyWithoutRaterInput;
 }
 
 export interface UserUpdateWithWhereUniqueWithoutBooksInput {
@@ -691,23 +714,24 @@ export interface UserUpdateWithWhereUniqueWithoutBooksInput {
   data: UserUpdateWithoutBooksDataInput;
 }
 
-export interface UserUpdateManyMutationInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-}
+export type PublisherWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
 export interface UserUpdateWithoutBooksDataInput {
   firstName?: String;
   lastName?: String;
+  type?: EnumUserRole;
   email?: String;
   password?: String;
   reviews?: ReviewUpdateManyWithoutReviewerInput;
+  ratings?: RatingUpdateManyWithoutRaterInput;
 }
 
-export interface ReviewUpdateManyMutationInput {
-  review?: String;
+export interface ReviewCreateInput {
+  review: String;
+  reviewer: UserCreateOneWithoutReviewsInput;
+  book: BookCreateOneWithoutReviewsInput;
 }
 
 export interface ReviewUpdateManyWithoutReviewerInput {
@@ -729,7 +753,7 @@ export interface ReviewUpdateManyWithoutReviewerInput {
     | ReviewUpdateManyWithWhereNestedInput;
 }
 
-export type PublisherWhereUniqueInput = AtLeastOne<{
+export type RatingWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
@@ -738,35 +762,42 @@ export interface ReviewUpdateWithWhereUniqueWithoutReviewerInput {
   data: ReviewUpdateWithoutReviewerDataInput;
 }
 
-export interface UserUpdateOneRequiredWithoutReviewsInput {
-  create?: UserCreateWithoutReviewsInput;
-  update?: UserUpdateWithoutReviewsDataInput;
-  upsert?: UserUpsertWithoutReviewsInput;
-  connect?: UserWhereUniqueInput;
+export interface RatingCreateInput {
+  rating: Int;
+  rater: UserCreateOneWithoutRatingsInput;
+  book: BookCreateOneWithoutRatingsInput;
 }
 
-export interface ReviewUpdateWithoutReviewerDataInput {
-  review?: String;
-  book?: BookUpdateOneRequiredInput;
+export interface BookCreateManyWithoutPublishersInput {
+  create?:
+    | BookCreateWithoutPublishersInput[]
+    | BookCreateWithoutPublishersInput;
+  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
 }
 
-export type RatingWhereUniqueInput = AtLeastOne<{
+export type ReviewWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface BookUpdateOneRequiredInput {
-  create?: BookCreateInput;
-  update?: BookUpdateDataInput;
-  upsert?: BookUpsertNestedInput;
+export interface BookUpdateOneRequiredWithoutReviewsInput {
+  create?: BookCreateWithoutReviewsInput;
+  update?: BookUpdateWithoutReviewsDataInput;
+  upsert?: BookUpsertWithoutReviewsInput;
   connect?: BookWhereUniqueInput;
 }
 
-export interface UserCreateOneWithoutReviewsInput {
-  create?: UserCreateWithoutReviewsInput;
-  connect?: UserWhereUniqueInput;
+export interface BookUpdateWithoutPublishersDataInput {
+  title?: String;
+  description?: String;
+  pages?: Int;
+  publishDateTime?: DateTimeInput;
+  authors?: UserUpdateManyWithoutBooksInput;
+  ratings?: RatingUpdateManyWithoutBookInput;
+  reviews?: ReviewUpdateManyWithoutBookInput;
+  isbnNo?: Int;
 }
 
-export interface BookUpdateDataInput {
+export interface BookUpdateWithoutReviewsDataInput {
   title?: String;
   description?: String;
   publishers?: PublisherUpdateManyWithoutPublicationInput;
@@ -777,46 +808,38 @@ export interface BookUpdateDataInput {
   isbnNo?: Int;
 }
 
-export type ReviewWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface BookCreateOneWithoutRatingsInput {
-  create?: BookCreateWithoutRatingsInput;
-  connect?: BookWhereUniqueInput;
-}
-
-export interface BookUpsertWithoutRatingsInput {
-  update: BookUpdateWithoutRatingsDataInput;
-  create: BookCreateWithoutRatingsInput;
-}
-
-export interface RatingUpdateWithWhereUniqueWithoutBookInput {
-  where: RatingWhereUniqueInput;
-  data: RatingUpdateWithoutBookDataInput;
-}
-
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   email?: String;
 }>;
 
-export interface RatingUpdateWithoutBookDataInput {
-  rating?: Int;
-  rater?: UserUpdateOneRequiredInput;
+export interface RatingUpdateManyWithoutBookInput {
+  create?: RatingCreateWithoutBookInput[] | RatingCreateWithoutBookInput;
+  delete?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+  connect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+  disconnect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+  update?:
+    | RatingUpdateWithWhereUniqueWithoutBookInput[]
+    | RatingUpdateWithWhereUniqueWithoutBookInput;
+  upsert?:
+    | RatingUpsertWithWhereUniqueWithoutBookInput[]
+    | RatingUpsertWithWhereUniqueWithoutBookInput;
+  deleteMany?: RatingScalarWhereInput[] | RatingScalarWhereInput;
+  updateMany?:
+    | RatingUpdateManyWithWhereNestedInput[]
+    | RatingUpdateManyWithWhereNestedInput;
 }
 
-export interface RatingUpdateInput {
-  rating?: Int;
-  rater?: UserUpdateOneRequiredInput;
-  book?: BookUpdateOneRequiredWithoutRatingsInput;
+export interface PublisherUpdateInput {
+  name?: String;
+  about?: String;
+  address?: String;
+  publication?: BookUpdateManyWithoutPublishersInput;
 }
 
-export interface UserUpdateOneRequiredInput {
-  create?: UserCreateInput;
-  update?: UserUpdateDataInput;
-  upsert?: UserUpsertNestedInput;
-  connect?: UserWhereUniqueInput;
+export interface RatingUpdateWithWhereUniqueWithoutBookInput {
+  where: RatingWhereUniqueInput;
+  data: RatingUpdateWithoutBookDataInput;
 }
 
 export interface PublisherCreateManyWithoutPublicationInput {
@@ -875,10 +898,11 @@ export interface UserCreateManyWithoutBooksInput {
   connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
 }
 
-export interface RatingCreateInput {
-  rating: Int;
-  rater: UserCreateOneInput;
-  book: BookCreateOneWithoutRatingsInput;
+export interface PublisherCreateInput {
+  name: String;
+  about?: String;
+  address?: String;
+  publication?: BookCreateManyWithoutPublishersInput;
 }
 
 export interface ReviewCreateManyWithoutReviewerInput {
@@ -888,15 +912,49 @@ export interface ReviewCreateManyWithoutReviewerInput {
   connect?: ReviewWhereUniqueInput[] | ReviewWhereUniqueInput;
 }
 
-export interface PublisherUpdateManyMutationInput {
-  name?: String;
-  about?: String;
-  address?: String;
+export interface BookUpdateManyMutationInput {
+  title?: String;
+  description?: String;
+  pages?: Int;
+  publishDateTime?: DateTimeInput;
+  isbnNo?: Int;
 }
 
-export interface BookCreateOneInput {
-  create?: BookCreateInput;
+export interface BookCreateOneWithoutReviewsInput {
+  create?: BookCreateWithoutReviewsInput;
   connect?: BookWhereUniqueInput;
+}
+
+export interface BookUpdateManyWithoutAuthorsInput {
+  create?: BookCreateWithoutAuthorsInput[] | BookCreateWithoutAuthorsInput;
+  delete?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+  disconnect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+  update?:
+    | BookUpdateWithWhereUniqueWithoutAuthorsInput[]
+    | BookUpdateWithWhereUniqueWithoutAuthorsInput;
+  upsert?:
+    | BookUpsertWithWhereUniqueWithoutAuthorsInput[]
+    | BookUpsertWithWhereUniqueWithoutAuthorsInput;
+  deleteMany?: BookScalarWhereInput[] | BookScalarWhereInput;
+  updateMany?:
+    | BookUpdateManyWithWhereNestedInput[]
+    | BookUpdateManyWithWhereNestedInput;
+}
+
+export interface RatingCreateManyWithoutBookInput {
+  create?: RatingCreateWithoutBookInput[] | RatingCreateWithoutBookInput;
+  connect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+}
+
+export interface BookUpdateWithWhereUniqueWithoutAuthorsInput {
+  where: BookWhereUniqueInput;
+  data: BookUpdateWithoutAuthorsDataInput;
+}
+
+export interface UserCreateOneWithoutRatingsInput {
+  create?: UserCreateWithoutRatingsInput;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface BookUpdateWithoutAuthorsDataInput {
@@ -906,12 +964,494 @@ export interface BookUpdateWithoutAuthorsDataInput {
   pages?: Int;
   publishDateTime?: DateTimeInput;
   ratings?: RatingUpdateManyWithoutBookInput;
+  reviews?: ReviewUpdateManyWithoutBookInput;
   isbnNo?: Int;
 }
 
-export interface RatingCreateWithoutBookInput {
+export interface BookCreateManyWithoutAuthorsInput {
+  create?: BookCreateWithoutAuthorsInput[] | BookCreateWithoutAuthorsInput;
+  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+}
+
+export interface ReviewUpdateManyWithoutBookInput {
+  create?: ReviewCreateWithoutBookInput[] | ReviewCreateWithoutBookInput;
+  delete?: ReviewWhereUniqueInput[] | ReviewWhereUniqueInput;
+  connect?: ReviewWhereUniqueInput[] | ReviewWhereUniqueInput;
+  disconnect?: ReviewWhereUniqueInput[] | ReviewWhereUniqueInput;
+  update?:
+    | ReviewUpdateWithWhereUniqueWithoutBookInput[]
+    | ReviewUpdateWithWhereUniqueWithoutBookInput;
+  upsert?:
+    | ReviewUpsertWithWhereUniqueWithoutBookInput[]
+    | ReviewUpsertWithWhereUniqueWithoutBookInput;
+  deleteMany?: ReviewScalarWhereInput[] | ReviewScalarWhereInput;
+  updateMany?:
+    | ReviewUpdateManyWithWhereNestedInput[]
+    | ReviewUpdateManyWithWhereNestedInput;
+}
+
+export interface ReviewCreateManyWithoutBookInput {
+  create?: ReviewCreateWithoutBookInput[] | ReviewCreateWithoutBookInput;
+  connect?: ReviewWhereUniqueInput[] | ReviewWhereUniqueInput;
+}
+
+export interface ReviewUpdateWithWhereUniqueWithoutBookInput {
+  where: ReviewWhereUniqueInput;
+  data: ReviewUpdateWithoutBookDataInput;
+}
+
+export interface UserCreateOneWithoutReviewsInput {
+  create?: UserCreateWithoutReviewsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface ReviewUpdateWithoutBookDataInput {
+  review?: String;
+  reviewer?: UserUpdateOneRequiredWithoutReviewsInput;
+}
+
+export interface RatingCreateManyWithoutRaterInput {
+  create?: RatingCreateWithoutRaterInput[] | RatingCreateWithoutRaterInput;
+  connect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+}
+
+export interface UserUpdateOneRequiredWithoutReviewsInput {
+  create?: UserCreateWithoutReviewsInput;
+  update?: UserUpdateWithoutReviewsDataInput;
+  upsert?: UserUpsertWithoutReviewsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface BookCreateOneWithoutRatingsInput {
+  create?: BookCreateWithoutRatingsInput;
+  connect?: BookWhereUniqueInput;
+}
+
+export interface UserUpdateWithoutReviewsDataInput {
+  firstName?: String;
+  lastName?: String;
+  type?: EnumUserRole;
+  email?: String;
+  password?: String;
+  books?: BookUpdateManyWithoutAuthorsInput;
+  ratings?: RatingUpdateManyWithoutRaterInput;
+}
+
+export interface BookUpdateInput {
+  title?: String;
+  description?: String;
+  publishers?: PublisherUpdateManyWithoutPublicationInput;
+  pages?: Int;
+  publishDateTime?: DateTimeInput;
+  authors?: UserUpdateManyWithoutBooksInput;
+  ratings?: RatingUpdateManyWithoutBookInput;
+  reviews?: ReviewUpdateManyWithoutBookInput;
+  isbnNo?: Int;
+}
+
+export interface RatingUpdateManyWithoutRaterInput {
+  create?: RatingCreateWithoutRaterInput[] | RatingCreateWithoutRaterInput;
+  delete?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+  connect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+  disconnect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
+  update?:
+    | RatingUpdateWithWhereUniqueWithoutRaterInput[]
+    | RatingUpdateWithWhereUniqueWithoutRaterInput;
+  upsert?:
+    | RatingUpsertWithWhereUniqueWithoutRaterInput[]
+    | RatingUpsertWithWhereUniqueWithoutRaterInput;
+  deleteMany?: RatingScalarWhereInput[] | RatingScalarWhereInput;
+  updateMany?:
+    | RatingUpdateManyWithWhereNestedInput[]
+    | RatingUpdateManyWithWhereNestedInput;
+}
+
+export interface BookWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  publishers_every?: PublisherWhereInput;
+  publishers_some?: PublisherWhereInput;
+  publishers_none?: PublisherWhereInput;
+  pages?: Int;
+  pages_not?: Int;
+  pages_in?: Int[] | Int;
+  pages_not_in?: Int[] | Int;
+  pages_lt?: Int;
+  pages_lte?: Int;
+  pages_gt?: Int;
+  pages_gte?: Int;
+  publishDateTime?: DateTimeInput;
+  publishDateTime_not?: DateTimeInput;
+  publishDateTime_in?: DateTimeInput[] | DateTimeInput;
+  publishDateTime_not_in?: DateTimeInput[] | DateTimeInput;
+  publishDateTime_lt?: DateTimeInput;
+  publishDateTime_lte?: DateTimeInput;
+  publishDateTime_gt?: DateTimeInput;
+  publishDateTime_gte?: DateTimeInput;
+  authors_every?: UserWhereInput;
+  authors_some?: UserWhereInput;
+  authors_none?: UserWhereInput;
+  ratings_every?: RatingWhereInput;
+  ratings_some?: RatingWhereInput;
+  ratings_none?: RatingWhereInput;
+  reviews_every?: ReviewWhereInput;
+  reviews_some?: ReviewWhereInput;
+  reviews_none?: ReviewWhereInput;
+  isbnNo?: Int;
+  isbnNo_not?: Int;
+  isbnNo_in?: Int[] | Int;
+  isbnNo_not_in?: Int[] | Int;
+  isbnNo_lt?: Int;
+  isbnNo_lte?: Int;
+  isbnNo_gt?: Int;
+  isbnNo_gte?: Int;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  AND?: BookWhereInput[] | BookWhereInput;
+  OR?: BookWhereInput[] | BookWhereInput;
+  NOT?: BookWhereInput[] | BookWhereInput;
+}
+
+export interface RatingUpdateWithWhereUniqueWithoutRaterInput {
+  where: RatingWhereUniqueInput;
+  data: RatingUpdateWithoutRaterDataInput;
+}
+
+export interface RatingSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: RatingWhereInput;
+  AND?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
+  OR?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
+  NOT?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
+}
+
+export interface RatingUpdateWithoutRaterDataInput {
+  rating?: Int;
+  book?: BookUpdateOneRequiredWithoutRatingsInput;
+}
+
+export interface UserUpdateInput {
+  firstName?: String;
+  lastName?: String;
+  type?: EnumUserRole;
+  email?: String;
+  password?: String;
+  books?: BookUpdateManyWithoutAuthorsInput;
+  reviews?: ReviewUpdateManyWithoutReviewerInput;
+  ratings?: RatingUpdateManyWithoutRaterInput;
+}
+
+export interface BookUpdateOneRequiredWithoutRatingsInput {
+  create?: BookCreateWithoutRatingsInput;
+  update?: BookUpdateWithoutRatingsDataInput;
+  upsert?: BookUpsertWithoutRatingsInput;
+  connect?: BookWhereUniqueInput;
+}
+
+export interface ReviewUpdateInput {
+  review?: String;
+  reviewer?: UserUpdateOneRequiredWithoutReviewsInput;
+  book?: BookUpdateOneRequiredWithoutReviewsInput;
+}
+
+export interface BookUpdateWithoutRatingsDataInput {
+  title?: String;
+  description?: String;
+  publishers?: PublisherUpdateManyWithoutPublicationInput;
+  pages?: Int;
+  publishDateTime?: DateTimeInput;
+  authors?: UserUpdateManyWithoutBooksInput;
+  reviews?: ReviewUpdateManyWithoutBookInput;
+  isbnNo?: Int;
+}
+
+export interface RatingUpdateInput {
+  rating?: Int;
+  rater?: UserUpdateOneRequiredWithoutRatingsInput;
+  book?: BookUpdateOneRequiredWithoutRatingsInput;
+}
+
+export interface BookUpsertWithoutRatingsInput {
+  update: BookUpdateWithoutRatingsDataInput;
+  create: BookCreateWithoutRatingsInput;
+}
+
+export interface BookUpsertWithWhereUniqueWithoutPublishersInput {
+  where: BookWhereUniqueInput;
+  update: BookUpdateWithoutPublishersDataInput;
+  create: BookCreateWithoutPublishersInput;
+}
+
+export interface RatingUpsertWithWhereUniqueWithoutRaterInput {
+  where: RatingWhereUniqueInput;
+  update: RatingUpdateWithoutRaterDataInput;
+  create: RatingCreateWithoutRaterInput;
+}
+
+export interface BookUpdateManyWithoutPublishersInput {
+  create?:
+    | BookCreateWithoutPublishersInput[]
+    | BookCreateWithoutPublishersInput;
+  delete?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+  disconnect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+  update?:
+    | BookUpdateWithWhereUniqueWithoutPublishersInput[]
+    | BookUpdateWithWhereUniqueWithoutPublishersInput;
+  upsert?:
+    | BookUpsertWithWhereUniqueWithoutPublishersInput[]
+    | BookUpsertWithWhereUniqueWithoutPublishersInput;
+  deleteMany?: BookScalarWhereInput[] | BookScalarWhereInput;
+  updateMany?:
+    | BookUpdateManyWithWhereNestedInput[]
+    | BookUpdateManyWithWhereNestedInput;
+}
+
+export interface RatingScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  rating?: Int;
+  rating_not?: Int;
+  rating_in?: Int[] | Int;
+  rating_not_in?: Int[] | Int;
+  rating_lt?: Int;
+  rating_lte?: Int;
+  rating_gt?: Int;
+  rating_gte?: Int;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: RatingScalarWhereInput[] | RatingScalarWhereInput;
+  OR?: RatingScalarWhereInput[] | RatingScalarWhereInput;
+  NOT?: RatingScalarWhereInput[] | RatingScalarWhereInput;
+}
+
+export interface BookCreateInput {
+  title: String;
+  description?: String;
+  publishers?: PublisherCreateManyWithoutPublicationInput;
+  pages?: Int;
+  publishDateTime: DateTimeInput;
+  authors?: UserCreateManyWithoutBooksInput;
+  ratings?: RatingCreateManyWithoutBookInput;
+  reviews?: ReviewCreateManyWithoutBookInput;
+  isbnNo?: Int;
+}
+
+export interface RatingUpdateManyWithWhereNestedInput {
+  where: RatingScalarWhereInput;
+  data: RatingUpdateManyDataInput;
+}
+
+export interface UserCreateWithoutBooksInput {
+  firstName: String;
+  lastName: String;
+  type?: EnumUserRole;
+  email: String;
+  password?: String;
+  reviews?: ReviewCreateManyWithoutReviewerInput;
+  ratings?: RatingCreateManyWithoutRaterInput;
+}
+
+export interface RatingUpdateManyDataInput {
+  rating?: Int;
+}
+
+export interface BookCreateWithoutReviewsInput {
+  title: String;
+  description?: String;
+  publishers?: PublisherCreateManyWithoutPublicationInput;
+  pages?: Int;
+  publishDateTime: DateTimeInput;
+  authors?: UserCreateManyWithoutBooksInput;
+  ratings?: RatingCreateManyWithoutBookInput;
+  isbnNo?: Int;
+}
+
+export interface UserUpsertWithoutReviewsInput {
+  update: UserUpdateWithoutReviewsDataInput;
+  create: UserCreateWithoutReviewsInput;
+}
+
+export interface UserCreateWithoutRatingsInput {
+  firstName: String;
+  lastName: String;
+  type?: EnumUserRole;
+  email: String;
+  password?: String;
+  books?: BookCreateManyWithoutAuthorsInput;
+  reviews?: ReviewCreateManyWithoutReviewerInput;
+}
+
+export interface ReviewUpsertWithWhereUniqueWithoutBookInput {
+  where: ReviewWhereUniqueInput;
+  update: ReviewUpdateWithoutBookDataInput;
+  create: ReviewCreateWithoutBookInput;
+}
+
+export interface ReviewCreateWithoutBookInput {
+  review: String;
+  reviewer: UserCreateOneWithoutReviewsInput;
+}
+
+export interface ReviewScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  review?: String;
+  review_not?: String;
+  review_in?: String[] | String;
+  review_not_in?: String[] | String;
+  review_lt?: String;
+  review_lte?: String;
+  review_gt?: String;
+  review_gte?: String;
+  review_contains?: String;
+  review_not_contains?: String;
+  review_starts_with?: String;
+  review_not_starts_with?: String;
+  review_ends_with?: String;
+  review_not_ends_with?: String;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: ReviewScalarWhereInput[] | ReviewScalarWhereInput;
+  OR?: ReviewScalarWhereInput[] | ReviewScalarWhereInput;
+  NOT?: ReviewScalarWhereInput[] | ReviewScalarWhereInput;
+}
+
+export interface RatingCreateWithoutRaterInput {
   rating: Int;
-  rater: UserCreateOneInput;
+  book: BookCreateOneWithoutRatingsInput;
+}
+
+export interface ReviewUpdateManyWithWhereNestedInput {
+  where: ReviewScalarWhereInput;
+  data: ReviewUpdateManyDataInput;
+}
+
+export interface PublisherUpdateManyWithoutPublicationInput {
+  create?:
+    | PublisherCreateWithoutPublicationInput[]
+    | PublisherCreateWithoutPublicationInput;
+  delete?: PublisherWhereUniqueInput[] | PublisherWhereUniqueInput;
+  connect?: PublisherWhereUniqueInput[] | PublisherWhereUniqueInput;
+  disconnect?: PublisherWhereUniqueInput[] | PublisherWhereUniqueInput;
+  update?:
+    | PublisherUpdateWithWhereUniqueWithoutPublicationInput[]
+    | PublisherUpdateWithWhereUniqueWithoutPublicationInput;
+  upsert?:
+    | PublisherUpsertWithWhereUniqueWithoutPublicationInput[]
+    | PublisherUpsertWithWhereUniqueWithoutPublicationInput;
+  deleteMany?: PublisherScalarWhereInput[] | PublisherScalarWhereInput;
+  updateMany?:
+    | PublisherUpdateManyWithWhereNestedInput[]
+    | PublisherUpdateManyWithWhereNestedInput;
+}
+
+export interface ReviewUpdateManyDataInput {
+  review?: String;
+}
+
+export interface BookSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: BookWhereInput;
+  AND?: BookSubscriptionWhereInput[] | BookSubscriptionWhereInput;
+  OR?: BookSubscriptionWhereInput[] | BookSubscriptionWhereInput;
+  NOT?: BookSubscriptionWhereInput[] | BookSubscriptionWhereInput;
 }
 
 export interface BookUpsertWithWhereUniqueWithoutAuthorsInput {
@@ -920,13 +1460,8 @@ export interface BookUpsertWithWhereUniqueWithoutAuthorsInput {
   create: BookCreateWithoutAuthorsInput;
 }
 
-export interface UserCreateInput {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password: String;
-  books?: BookCreateManyWithoutAuthorsInput;
-  reviews?: ReviewCreateManyWithoutReviewerInput;
+export interface RatingUpdateManyMutationInput {
+  rating?: Int;
 }
 
 export interface BookScalarWhereInput {
@@ -1017,14 +1552,9 @@ export interface BookScalarWhereInput {
   NOT?: BookScalarWhereInput[] | BookScalarWhereInput;
 }
 
-export interface BookCreateWithoutAuthorsInput {
-  title: String;
-  description?: String;
-  publishers?: PublisherCreateManyWithoutPublicationInput;
-  pages?: Int;
-  publishDateTime: DateTimeInput;
-  ratings?: RatingCreateManyWithoutBookInput;
-  isbnNo?: Int;
+export interface BookUpdateWithWhereUniqueWithoutPublishersInput {
+  where: BookWhereUniqueInput;
+  data: BookUpdateWithoutPublishersDataInput;
 }
 
 export interface BookUpdateManyWithWhereNestedInput {
@@ -1032,23 +1562,10 @@ export interface BookUpdateManyWithWhereNestedInput {
   data: BookUpdateManyDataInput;
 }
 
-export interface PublisherUpdateManyWithoutPublicationInput {
-  create?:
-    | PublisherCreateWithoutPublicationInput[]
-    | PublisherCreateWithoutPublicationInput;
-  delete?: PublisherWhereUniqueInput[] | PublisherWhereUniqueInput;
-  connect?: PublisherWhereUniqueInput[] | PublisherWhereUniqueInput;
-  disconnect?: PublisherWhereUniqueInput[] | PublisherWhereUniqueInput;
-  update?:
-    | PublisherUpdateWithWhereUniqueWithoutPublicationInput[]
-    | PublisherUpdateWithWhereUniqueWithoutPublicationInput;
-  upsert?:
-    | PublisherUpsertWithWhereUniqueWithoutPublicationInput[]
-    | PublisherUpsertWithWhereUniqueWithoutPublicationInput;
-  deleteMany?: PublisherScalarWhereInput[] | PublisherScalarWhereInput;
-  updateMany?:
-    | PublisherUpdateManyWithWhereNestedInput[]
-    | PublisherUpdateManyWithWhereNestedInput;
+export interface PublisherCreateWithoutPublicationInput {
+  name: String;
+  about?: String;
+  address?: String;
 }
 
 export interface BookUpdateManyDataInput {
@@ -1059,15 +1576,30 @@ export interface BookUpdateManyDataInput {
   isbnNo?: Int;
 }
 
-export interface PublisherUpdateWithoutPublicationDataInput {
-  name?: String;
-  about?: String;
-  address?: String;
+export interface RatingCreateWithoutBookInput {
+  rating: Int;
+  rater: UserCreateOneWithoutRatingsInput;
 }
 
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
+export interface UserUpsertWithoutRatingsInput {
+  update: UserUpdateWithoutRatingsDataInput;
+  create: UserCreateWithoutRatingsInput;
+}
+
+export interface UserCreateWithoutReviewsInput {
+  firstName: String;
+  lastName: String;
+  type?: EnumUserRole;
+  email: String;
+  password?: String;
+  books?: BookCreateManyWithoutAuthorsInput;
+  ratings?: RatingCreateManyWithoutRaterInput;
+}
+
+export interface RatingUpsertWithWhereUniqueWithoutBookInput {
+  where: RatingWhereUniqueInput;
+  update: RatingUpdateWithoutBookDataInput;
+  create: RatingCreateWithoutBookInput;
 }
 
 export interface PublisherWhereInput {
@@ -1151,198 +1683,20 @@ export interface PublisherWhereInput {
   NOT?: PublisherWhereInput[] | PublisherWhereInput;
 }
 
-export interface RatingUpsertWithWhereUniqueWithoutBookInput {
-  where: RatingWhereUniqueInput;
-  update: RatingUpdateWithoutBookDataInput;
-  create: RatingCreateWithoutBookInput;
+export interface BookUpsertWithoutReviewsInput {
+  update: BookUpdateWithoutReviewsDataInput;
+  create: BookCreateWithoutReviewsInput;
 }
 
-export interface BookSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: BookWhereInput;
-  AND?: BookSubscriptionWhereInput[] | BookSubscriptionWhereInput;
-  OR?: BookSubscriptionWhereInput[] | BookSubscriptionWhereInput;
-  NOT?: BookSubscriptionWhereInput[] | BookSubscriptionWhereInput;
-}
-
-export interface RatingScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  rating?: Int;
-  rating_not?: Int;
-  rating_in?: Int[] | Int;
-  rating_not_in?: Int[] | Int;
-  rating_lt?: Int;
-  rating_lte?: Int;
-  rating_gt?: Int;
-  rating_gte?: Int;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  AND?: RatingScalarWhereInput[] | RatingScalarWhereInput;
-  OR?: RatingScalarWhereInput[] | RatingScalarWhereInput;
-  NOT?: RatingScalarWhereInput[] | RatingScalarWhereInput;
-}
-
-export interface UserUpsertWithoutReviewsInput {
-  update: UserUpdateWithoutReviewsDataInput;
-  create: UserCreateWithoutReviewsInput;
-}
-
-export interface RatingUpdateManyWithWhereNestedInput {
-  where: RatingScalarWhereInput;
-  data: RatingUpdateManyDataInput;
-}
-
-export interface ReviewUpdateInput {
-  review?: String;
-  reviewer?: UserUpdateOneRequiredWithoutReviewsInput;
-  book?: BookUpdateOneRequiredInput;
-}
-
-export interface RatingUpdateManyDataInput {
-  rating?: Int;
-}
-
-export interface ReviewCreateInput {
-  review: String;
-  reviewer: UserCreateOneWithoutReviewsInput;
-  book: BookCreateOneInput;
-}
-
-export interface BookUpsertNestedInput {
-  update: BookUpdateDataInput;
-  create: BookCreateInput;
-}
-
-export interface BookUpdateWithoutRatingsDataInput {
-  title?: String;
-  description?: String;
-  publishers?: PublisherUpdateManyWithoutPublicationInput;
-  pages?: Int;
-  publishDateTime?: DateTimeInput;
-  authors?: UserUpdateManyWithoutBooksInput;
-  isbnNo?: Int;
-}
-
-export interface ReviewUpsertWithWhereUniqueWithoutReviewerInput {
-  where: ReviewWhereUniqueInput;
-  update: ReviewUpdateWithoutReviewerDataInput;
-  create: ReviewCreateWithoutReviewerInput;
-}
-
-export interface BookCreateWithoutRatingsInput {
-  title: String;
-  description?: String;
-  publishers?: PublisherCreateManyWithoutPublicationInput;
-  pages?: Int;
-  publishDateTime: DateTimeInput;
-  authors?: UserCreateManyWithoutBooksInput;
-  isbnNo?: Int;
-}
-
-export interface ReviewScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  review?: String;
-  review_not?: String;
-  review_in?: String[] | String;
-  review_not_in?: String[] | String;
-  review_lt?: String;
-  review_lte?: String;
-  review_gt?: String;
-  review_gte?: String;
-  review_contains?: String;
-  review_not_contains?: String;
-  review_starts_with?: String;
-  review_not_starts_with?: String;
-  review_ends_with?: String;
-  review_not_ends_with?: String;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  AND?: ReviewScalarWhereInput[] | ReviewScalarWhereInput;
-  OR?: ReviewScalarWhereInput[] | ReviewScalarWhereInput;
-  NOT?: ReviewScalarWhereInput[] | ReviewScalarWhereInput;
-}
-
-export interface PublisherCreateWithoutPublicationInput {
-  name: String;
+export interface PublisherUpdateManyMutationInput {
+  name?: String;
   about?: String;
   address?: String;
 }
 
-export interface ReviewUpdateManyWithWhereNestedInput {
-  where: ReviewScalarWhereInput;
-  data: ReviewUpdateManyDataInput;
-}
-
-export interface ReviewCreateWithoutReviewerInput {
-  review: String;
-  book: BookCreateOneInput;
-}
-
-export interface ReviewUpdateManyDataInput {
-  review?: String;
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserUpsertWithWhereUniqueWithoutBooksInput {
-  where: UserWhereUniqueInput;
-  update: UserUpdateWithoutBooksDataInput;
-  create: UserCreateWithoutBooksInput;
-}
-
-export interface BookUpdateInput {
-  title?: String;
-  description?: String;
-  publishers?: PublisherUpdateManyWithoutPublicationInput;
-  pages?: Int;
-  publishDateTime?: DateTimeInput;
-  authors?: UserUpdateManyWithoutBooksInput;
-  ratings?: RatingUpdateManyWithoutBookInput;
-  isbnNo?: Int;
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
 }
 
 export interface UserScalarWhereInput {
@@ -1388,6 +1742,10 @@ export interface UserScalarWhereInput {
   lastName_not_starts_with?: String;
   lastName_ends_with?: String;
   lastName_not_ends_with?: String;
+  type?: EnumUserRole;
+  type_not?: EnumUserRole;
+  type_in?: EnumUserRole[] | EnumUserRole;
+  type_not_in?: EnumUserRole[] | EnumUserRole;
   email?: String;
   email_not?: String;
   email_in?: String[] | String;
@@ -1437,218 +1795,16 @@ export interface UserScalarWhereInput {
   NOT?: UserScalarWhereInput[] | UserScalarWhereInput;
 }
 
-export interface BookWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  description?: String;
-  description_not?: String;
-  description_in?: String[] | String;
-  description_not_in?: String[] | String;
-  description_lt?: String;
-  description_lte?: String;
-  description_gt?: String;
-  description_gte?: String;
-  description_contains?: String;
-  description_not_contains?: String;
-  description_starts_with?: String;
-  description_not_starts_with?: String;
-  description_ends_with?: String;
-  description_not_ends_with?: String;
-  publishers_every?: PublisherWhereInput;
-  publishers_some?: PublisherWhereInput;
-  publishers_none?: PublisherWhereInput;
-  pages?: Int;
-  pages_not?: Int;
-  pages_in?: Int[] | Int;
-  pages_not_in?: Int[] | Int;
-  pages_lt?: Int;
-  pages_lte?: Int;
-  pages_gt?: Int;
-  pages_gte?: Int;
-  publishDateTime?: DateTimeInput;
-  publishDateTime_not?: DateTimeInput;
-  publishDateTime_in?: DateTimeInput[] | DateTimeInput;
-  publishDateTime_not_in?: DateTimeInput[] | DateTimeInput;
-  publishDateTime_lt?: DateTimeInput;
-  publishDateTime_lte?: DateTimeInput;
-  publishDateTime_gt?: DateTimeInput;
-  publishDateTime_gte?: DateTimeInput;
-  authors_every?: UserWhereInput;
-  authors_some?: UserWhereInput;
-  authors_none?: UserWhereInput;
-  ratings_every?: RatingWhereInput;
-  ratings_some?: RatingWhereInput;
-  ratings_none?: RatingWhereInput;
-  isbnNo?: Int;
-  isbnNo_not?: Int;
-  isbnNo_in?: Int[] | Int;
-  isbnNo_not_in?: Int[] | Int;
-  isbnNo_lt?: Int;
-  isbnNo_lte?: Int;
-  isbnNo_gt?: Int;
-  isbnNo_gte?: Int;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  AND?: BookWhereInput[] | BookWhereInput;
-  OR?: BookWhereInput[] | BookWhereInput;
-  NOT?: BookWhereInput[] | BookWhereInput;
+export interface UserUpsertWithWhereUniqueWithoutBooksInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutBooksDataInput;
+  create: UserCreateWithoutBooksInput;
 }
 
-export interface UserUpdateManyWithWhereNestedInput {
-  where: UserScalarWhereInput;
-  data: UserUpdateManyDataInput;
-}
-
-export interface UserUpdateInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  books?: BookUpdateManyWithoutAuthorsInput;
-  reviews?: ReviewUpdateManyWithoutReviewerInput;
-}
-
-export interface UserUpdateManyDataInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-}
-
-export interface UserCreateWithoutReviewsInput {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password: String;
-  books?: BookCreateManyWithoutAuthorsInput;
-}
-
-export interface BookUpdateManyMutationInput {
-  title?: String;
-  description?: String;
-  pages?: Int;
-  publishDateTime?: DateTimeInput;
-  isbnNo?: Int;
-}
-
-export interface BookUpdateOneRequiredWithoutRatingsInput {
-  create?: BookCreateWithoutRatingsInput;
-  update?: BookUpdateWithoutRatingsDataInput;
-  upsert?: BookUpsertWithoutRatingsInput;
-  connect?: BookWhereUniqueInput;
-}
-
-export interface BookUpsertWithWhereUniqueWithoutPublishersInput {
-  where: BookWhereUniqueInput;
-  update: BookUpdateWithoutPublishersDataInput;
-  create: BookCreateWithoutPublishersInput;
-}
-
-export interface UserCreateWithoutBooksInput {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password: String;
-  reviews?: ReviewCreateManyWithoutReviewerInput;
-}
-
-export interface BookUpdateWithoutPublishersDataInput {
-  title?: String;
-  description?: String;
-  pages?: Int;
-  publishDateTime?: DateTimeInput;
-  authors?: UserUpdateManyWithoutBooksInput;
-  ratings?: RatingUpdateManyWithoutBookInput;
-  isbnNo?: Int;
-}
-
-export interface BookCreateManyWithoutAuthorsInput {
-  create?: BookCreateWithoutAuthorsInput[] | BookCreateWithoutAuthorsInput;
-  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
-}
-
-export interface PublisherCreateInput {
-  name: String;
-  about?: String;
-  address?: String;
-  publication?: BookCreateManyWithoutPublishersInput;
-}
-
-export interface RatingSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: RatingWhereInput;
-  AND?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
-  OR?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
-  NOT?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
-}
-
-export interface BookUpdateManyWithoutPublishersInput {
-  create?:
-    | BookCreateWithoutPublishersInput[]
-    | BookCreateWithoutPublishersInput;
-  delete?: BookWhereUniqueInput[] | BookWhereUniqueInput;
-  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
-  disconnect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
-  update?:
-    | BookUpdateWithWhereUniqueWithoutPublishersInput[]
-    | BookUpdateWithWhereUniqueWithoutPublishersInput;
-  upsert?:
-    | BookUpsertWithWhereUniqueWithoutPublishersInput[]
-    | BookUpsertWithWhereUniqueWithoutPublishersInput;
-  deleteMany?: BookScalarWhereInput[] | BookScalarWhereInput;
-  updateMany?:
-    | BookUpdateManyWithWhereNestedInput[]
-    | BookUpdateManyWithWhereNestedInput;
-}
-
-export interface PublisherUpdateInput {
-  name?: String;
-  about?: String;
-  address?: String;
-  publication?: BookUpdateManyWithoutPublishersInput;
+export interface ReviewUpsertWithWhereUniqueWithoutReviewerInput {
+  where: ReviewWhereUniqueInput;
+  update: ReviewUpdateWithoutReviewerDataInput;
+  create: ReviewCreateWithoutReviewerInput;
 }
 
 export interface BookCreateWithoutPublishersInput {
@@ -1658,47 +1814,39 @@ export interface BookCreateWithoutPublishersInput {
   publishDateTime: DateTimeInput;
   authors?: UserCreateManyWithoutBooksInput;
   ratings?: RatingCreateManyWithoutBookInput;
+  reviews?: ReviewCreateManyWithoutBookInput;
   isbnNo?: Int;
 }
 
-export interface BookCreateManyWithoutPublishersInput {
-  create?:
-    | BookCreateWithoutPublishersInput[]
-    | BookCreateWithoutPublishersInput;
-  connect?: BookWhereUniqueInput[] | BookWhereUniqueInput;
+export interface ReviewUpdateManyMutationInput {
+  review?: String;
 }
 
-export interface UserUpdateWithoutReviewsDataInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  books?: BookUpdateManyWithoutAuthorsInput;
-}
-
-export interface PublisherUpdateWithWhereUniqueWithoutPublicationInput {
-  where: PublisherWhereUniqueInput;
-  data: PublisherUpdateWithoutPublicationDataInput;
-}
-
-export interface RatingCreateManyWithoutBookInput {
-  create?: RatingCreateWithoutBookInput[] | RatingCreateWithoutBookInput;
-  connect?: RatingWhereUniqueInput[] | RatingWhereUniqueInput;
-}
-
-export interface BookCreateInput {
+export interface BookCreateWithoutRatingsInput {
   title: String;
   description?: String;
   publishers?: PublisherCreateManyWithoutPublicationInput;
   pages?: Int;
   publishDateTime: DateTimeInput;
   authors?: UserCreateManyWithoutBooksInput;
-  ratings?: RatingCreateManyWithoutBookInput;
+  reviews?: ReviewCreateManyWithoutBookInput;
   isbnNo?: Int;
 }
 
-export interface RatingUpdateManyMutationInput {
-  rating?: Int;
+export interface BookCreateWithoutAuthorsInput {
+  title: String;
+  description?: String;
+  publishers?: PublisherCreateManyWithoutPublicationInput;
+  pages?: Int;
+  publishDateTime: DateTimeInput;
+  ratings?: RatingCreateManyWithoutBookInput;
+  reviews?: ReviewCreateManyWithoutBookInput;
+  isbnNo?: Int;
+}
+
+export interface ReviewCreateWithoutReviewerInput {
+  review: String;
+  book: BookCreateOneWithoutReviewsInput;
 }
 
 export interface NodeNode {
@@ -1709,8 +1857,9 @@ export interface UserPreviousValues {
   id: ID_Output;
   firstName: String;
   lastName: String;
+  type?: EnumUserRole;
   email: String;
-  password: String;
+  password?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -1721,6 +1870,7 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
+  type: () => Promise<EnumUserRole>;
   email: () => Promise<String>;
   password: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1733,6 +1883,7 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<EnumUserRole>>;
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1852,8 +2003,9 @@ export interface User {
   id: ID_Output;
   firstName: String;
   lastName: String;
+  type?: EnumUserRole;
   email: String;
-  password: String;
+  password?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -1862,6 +2014,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
+  type: () => Promise<EnumUserRole>;
   email: () => Promise<String>;
   password: () => Promise<String>;
   books: <T = FragmentableArray<Book>>(
@@ -1886,6 +2039,17 @@ export interface UserPromise extends Promise<User>, Fragmentable {
       last?: Int;
     },
   ) => T;
+  ratings: <T = FragmentableArray<Rating>>(
+    args?: {
+      where?: RatingWhereInput;
+      orderBy?: RatingOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    },
+  ) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -1896,6 +2060,7 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<EnumUserRole>>;
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   books: <T = Promise<AsyncIterator<BookSubscription>>>(
@@ -1913,6 +2078,17 @@ export interface UserSubscription
     args?: {
       where?: ReviewWhereInput;
       orderBy?: ReviewOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    },
+  ) => T;
+  ratings: <T = Promise<AsyncIterator<RatingSubscription>>>(
+    args?: {
+      where?: RatingWhereInput;
+      orderBy?: RatingOrderByInput;
       skip?: Int;
       after?: String;
       before?: String;
@@ -2072,6 +2248,17 @@ export interface BookPromise extends Promise<Book>, Fragmentable {
       last?: Int;
     },
   ) => T;
+  reviews: <T = FragmentableArray<Review>>(
+    args?: {
+      where?: ReviewWhereInput;
+      orderBy?: ReviewOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    },
+  ) => T;
   isbnNo: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -2111,6 +2298,17 @@ export interface BookSubscription
     args?: {
       where?: RatingWhereInput;
       orderBy?: RatingOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    },
+  ) => T;
+  reviews: <T = Promise<AsyncIterator<ReviewSubscription>>>(
+    args?: {
+      where?: ReviewWhereInput;
+      orderBy?: ReviewOrderByInput;
       skip?: Int;
       after?: String;
       before?: String;
@@ -2568,12 +2766,12 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
-export type Long = string;
-
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
+
+export type Long = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -2603,6 +2801,10 @@ export type String = string;
 export const models: Model[] = [
   {
     name: 'Book',
+    embedded: false,
+  },
+  {
+    name: 'EnumUserRole',
     embedded: false,
   },
   {
