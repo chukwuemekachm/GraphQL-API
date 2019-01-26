@@ -1,4 +1,4 @@
-import { IUserMutation } from '../../types/IUserMutation';
+import { IUserMutation } from '../../types/mutation/IUserMutation';
 import { MutationResolvers } from '../../types/graphqlgen';
 import { IContext } from '../../types/IContext';
 import { User } from '../../prisma/generated/prisma-client';

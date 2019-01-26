@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 
-import { IAuthMutation } from '../../types/IAuthMutation';
+import { IAuthMutation } from '../../types/mutation/IAuthMutation';
 import { IContext } from '../../types/IContext';
 import { generateToken } from '../../helpers/jwtHelper';
 import validateRequest, {
