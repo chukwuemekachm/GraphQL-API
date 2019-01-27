@@ -3,6 +3,7 @@ scalar DateTime
 type Query {
   info: String!
   getPublishers(sort: PublisherSearchPaginationOrderInput): [Publisher!]!
+  getAuthors(sort: UserSearchPaginationOrderInput): [User!]!
 }
 
 type Mutation {
@@ -48,11 +49,31 @@ input PublisherSearchPaginationOrderInput {
   limit: Int
 }
 
+input UserSearchPaginationOrderInput {
+  search: String
+  orderBy: UserOrderBy
+  offset: Int
+  limit: Int
+}
+
 enum PublisherOrderBy {
   name_ASC
   name_DESC
   about_ASC
   about_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+enum UserOrderBy {
+  lastName_ASC
+  lastName_DESC
+  firstName_ASC
+  firstName_DESC
+  email_ASC
+  email_DESC
+  id_ASC
+  id_DESC
   createdAt_ASC
   createdAt_DESC
 }

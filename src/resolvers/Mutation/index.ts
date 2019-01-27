@@ -20,13 +20,13 @@ const mutation: MutationResolvers.Type = {
   ) => AuthMutation.login(parent, args, context, info),
   createPublisher: (
     parent: undefined,
-    args: any,
+    args: MutationResolvers.ArgsCreatePublisher,
     context: IContext,
     info: GraphQLResolveInfo,
   ) => PublisherMutation.createPublisher(parent, args, context, info),
   createAuthor: (
     parent: undefined,
-    args: any,
+    args: MutationResolvers.ArgsCreateAuthor,
     context: IContext,
     info: GraphQLResolveInfo,
   ) => UserMutation.createAuthor(parent, args, context, info),

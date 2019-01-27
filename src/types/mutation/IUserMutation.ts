@@ -1,4 +1,4 @@
-import { MutationResolvers } from './graphqlgen';
+import { MutationResolvers } from '../graphqlgen';
 
 export abstract class IUserMutation {
   static createAuthor: MutationResolvers.CreateAuthorResolver;
