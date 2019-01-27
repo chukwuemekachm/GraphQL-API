@@ -38,7 +38,7 @@ type Book @db(name: "book") {
   authors: [User!]!
   ratings: [Rating!]
   reviews: [Review!]
-  isbnNo: Int
+  isbnNo: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }

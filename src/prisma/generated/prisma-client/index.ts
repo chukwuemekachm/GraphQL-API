@@ -794,7 +794,7 @@ export interface BookUpdateWithoutPublishersDataInput {
   authors?: UserUpdateManyWithoutBooksInput;
   ratings?: RatingUpdateManyWithoutBookInput;
   reviews?: ReviewUpdateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface BookUpdateWithoutReviewsDataInput {
@@ -805,7 +805,7 @@ export interface BookUpdateWithoutReviewsDataInput {
   publishDateTime?: DateTimeInput;
   authors?: UserUpdateManyWithoutBooksInput;
   ratings?: RatingUpdateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{
@@ -917,7 +917,7 @@ export interface BookUpdateManyMutationInput {
   description?: String;
   pages?: Int;
   publishDateTime?: DateTimeInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface BookCreateOneWithoutReviewsInput {
@@ -965,7 +965,7 @@ export interface BookUpdateWithoutAuthorsDataInput {
   publishDateTime?: DateTimeInput;
   ratings?: RatingUpdateManyWithoutBookInput;
   reviews?: ReviewUpdateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface BookCreateManyWithoutAuthorsInput {
@@ -1046,7 +1046,7 @@ export interface BookUpdateInput {
   authors?: UserUpdateManyWithoutBooksInput;
   ratings?: RatingUpdateManyWithoutBookInput;
   reviews?: ReviewUpdateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface RatingUpdateManyWithoutRaterInput {
@@ -1137,14 +1137,20 @@ export interface BookWhereInput {
   reviews_every?: ReviewWhereInput;
   reviews_some?: ReviewWhereInput;
   reviews_none?: ReviewWhereInput;
-  isbnNo?: Int;
-  isbnNo_not?: Int;
-  isbnNo_in?: Int[] | Int;
-  isbnNo_not_in?: Int[] | Int;
-  isbnNo_lt?: Int;
-  isbnNo_lte?: Int;
-  isbnNo_gt?: Int;
-  isbnNo_gte?: Int;
+  isbnNo?: String;
+  isbnNo_not?: String;
+  isbnNo_in?: String[] | String;
+  isbnNo_not_in?: String[] | String;
+  isbnNo_lt?: String;
+  isbnNo_lte?: String;
+  isbnNo_gt?: String;
+  isbnNo_gte?: String;
+  isbnNo_contains?: String;
+  isbnNo_not_contains?: String;
+  isbnNo_starts_with?: String;
+  isbnNo_not_starts_with?: String;
+  isbnNo_ends_with?: String;
+  isbnNo_not_ends_with?: String;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -1219,7 +1225,7 @@ export interface BookUpdateWithoutRatingsDataInput {
   publishDateTime?: DateTimeInput;
   authors?: UserUpdateManyWithoutBooksInput;
   reviews?: ReviewUpdateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface RatingUpdateInput {
@@ -1309,7 +1315,7 @@ export interface BookCreateInput {
   authors?: UserCreateManyWithoutBooksInput;
   ratings?: RatingCreateManyWithoutBookInput;
   reviews?: ReviewCreateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface RatingUpdateManyWithWhereNestedInput {
@@ -1339,7 +1345,7 @@ export interface BookCreateWithoutReviewsInput {
   publishDateTime: DateTimeInput;
   authors?: UserCreateManyWithoutBooksInput;
   ratings?: RatingCreateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface UserUpsertWithoutReviewsInput {
@@ -1523,14 +1529,20 @@ export interface BookScalarWhereInput {
   publishDateTime_lte?: DateTimeInput;
   publishDateTime_gt?: DateTimeInput;
   publishDateTime_gte?: DateTimeInput;
-  isbnNo?: Int;
-  isbnNo_not?: Int;
-  isbnNo_in?: Int[] | Int;
-  isbnNo_not_in?: Int[] | Int;
-  isbnNo_lt?: Int;
-  isbnNo_lte?: Int;
-  isbnNo_gt?: Int;
-  isbnNo_gte?: Int;
+  isbnNo?: String;
+  isbnNo_not?: String;
+  isbnNo_in?: String[] | String;
+  isbnNo_not_in?: String[] | String;
+  isbnNo_lt?: String;
+  isbnNo_lte?: String;
+  isbnNo_gt?: String;
+  isbnNo_gte?: String;
+  isbnNo_contains?: String;
+  isbnNo_not_contains?: String;
+  isbnNo_starts_with?: String;
+  isbnNo_not_starts_with?: String;
+  isbnNo_ends_with?: String;
+  isbnNo_not_ends_with?: String;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -1573,7 +1585,7 @@ export interface BookUpdateManyDataInput {
   description?: String;
   pages?: Int;
   publishDateTime?: DateTimeInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface RatingCreateWithoutBookInput {
@@ -1815,7 +1827,7 @@ export interface BookCreateWithoutPublishersInput {
   authors?: UserCreateManyWithoutBooksInput;
   ratings?: RatingCreateManyWithoutBookInput;
   reviews?: ReviewCreateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface ReviewUpdateManyMutationInput {
@@ -1830,7 +1842,7 @@ export interface BookCreateWithoutRatingsInput {
   publishDateTime: DateTimeInput;
   authors?: UserCreateManyWithoutBooksInput;
   reviews?: ReviewCreateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface BookCreateWithoutAuthorsInput {
@@ -1841,7 +1853,7 @@ export interface BookCreateWithoutAuthorsInput {
   publishDateTime: DateTimeInput;
   ratings?: RatingCreateManyWithoutBookInput;
   reviews?: ReviewCreateManyWithoutBookInput;
-  isbnNo?: Int;
+  isbnNo?: String;
 }
 
 export interface ReviewCreateWithoutReviewerInput {
@@ -2204,7 +2216,7 @@ export interface Book {
   description?: String;
   pages?: Int;
   publishDateTime: DateTimeOutput;
-  isbnNo?: Int;
+  isbnNo?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2259,7 +2271,7 @@ export interface BookPromise extends Promise<Book>, Fragmentable {
       last?: Int;
     },
   ) => T;
-  isbnNo: () => Promise<Int>;
+  isbnNo: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2316,7 +2328,7 @@ export interface BookSubscription
       last?: Int;
     },
   ) => T;
-  isbnNo: () => Promise<AsyncIterator<Int>>;
+  isbnNo: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -2389,7 +2401,7 @@ export interface BookPreviousValues {
   description?: String;
   pages?: Int;
   publishDateTime: DateTimeOutput;
-  isbnNo?: Int;
+  isbnNo?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2402,7 +2414,7 @@ export interface BookPreviousValuesPromise
   description: () => Promise<String>;
   pages: () => Promise<Int>;
   publishDateTime: () => Promise<DateTimeOutput>;
-  isbnNo: () => Promise<Int>;
+  isbnNo: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2415,7 +2427,7 @@ export interface BookPreviousValuesSubscription
   description: () => Promise<AsyncIterator<String>>;
   pages: () => Promise<AsyncIterator<Int>>;
   publishDateTime: () => Promise<AsyncIterator<DateTimeOutput>>;
-  isbnNo: () => Promise<AsyncIterator<Int>>;
+  isbnNo: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

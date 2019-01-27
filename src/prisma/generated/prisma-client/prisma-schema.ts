@@ -32,7 +32,7 @@ type Book {
   authors(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   ratings(where: RatingWhereInput, orderBy: RatingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Rating!]
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
-  isbnNo: Int
+  isbnNo: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -52,7 +52,7 @@ input BookCreateInput {
   authors: UserCreateManyWithoutBooksInput
   ratings: RatingCreateManyWithoutBookInput
   reviews: ReviewCreateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookCreateManyWithoutAuthorsInput {
@@ -83,7 +83,7 @@ input BookCreateWithoutAuthorsInput {
   publishDateTime: DateTime!
   ratings: RatingCreateManyWithoutBookInput
   reviews: ReviewCreateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookCreateWithoutPublishersInput {
@@ -94,7 +94,7 @@ input BookCreateWithoutPublishersInput {
   authors: UserCreateManyWithoutBooksInput
   ratings: RatingCreateManyWithoutBookInput
   reviews: ReviewCreateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookCreateWithoutRatingsInput {
@@ -105,7 +105,7 @@ input BookCreateWithoutRatingsInput {
   publishDateTime: DateTime!
   authors: UserCreateManyWithoutBooksInput
   reviews: ReviewCreateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookCreateWithoutReviewsInput {
@@ -116,7 +116,7 @@ input BookCreateWithoutReviewsInput {
   publishDateTime: DateTime!
   authors: UserCreateManyWithoutBooksInput
   ratings: RatingCreateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 type BookEdge {
@@ -149,7 +149,7 @@ type BookPreviousValues {
   description: String
   pages: Int
   publishDateTime: DateTime!
-  isbnNo: Int
+  isbnNo: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -213,14 +213,20 @@ input BookScalarWhereInput {
   publishDateTime_lte: DateTime
   publishDateTime_gt: DateTime
   publishDateTime_gte: DateTime
-  isbnNo: Int
-  isbnNo_not: Int
-  isbnNo_in: [Int!]
-  isbnNo_not_in: [Int!]
-  isbnNo_lt: Int
-  isbnNo_lte: Int
-  isbnNo_gt: Int
-  isbnNo_gte: Int
+  isbnNo: String
+  isbnNo_not: String
+  isbnNo_in: [String!]
+  isbnNo_not_in: [String!]
+  isbnNo_lt: String
+  isbnNo_lte: String
+  isbnNo_gt: String
+  isbnNo_gte: String
+  isbnNo_contains: String
+  isbnNo_not_contains: String
+  isbnNo_starts_with: String
+  isbnNo_not_starts_with: String
+  isbnNo_ends_with: String
+  isbnNo_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -269,7 +275,7 @@ input BookUpdateInput {
   authors: UserUpdateManyWithoutBooksInput
   ratings: RatingUpdateManyWithoutBookInput
   reviews: ReviewUpdateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookUpdateManyDataInput {
@@ -277,7 +283,7 @@ input BookUpdateManyDataInput {
   description: String
   pages: Int
   publishDateTime: DateTime
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookUpdateManyMutationInput {
@@ -285,7 +291,7 @@ input BookUpdateManyMutationInput {
   description: String
   pages: Int
   publishDateTime: DateTime
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookUpdateManyWithoutAuthorsInput {
@@ -337,7 +343,7 @@ input BookUpdateWithoutAuthorsDataInput {
   publishDateTime: DateTime
   ratings: RatingUpdateManyWithoutBookInput
   reviews: ReviewUpdateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookUpdateWithoutPublishersDataInput {
@@ -348,7 +354,7 @@ input BookUpdateWithoutPublishersDataInput {
   authors: UserUpdateManyWithoutBooksInput
   ratings: RatingUpdateManyWithoutBookInput
   reviews: ReviewUpdateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookUpdateWithoutRatingsDataInput {
@@ -359,7 +365,7 @@ input BookUpdateWithoutRatingsDataInput {
   publishDateTime: DateTime
   authors: UserUpdateManyWithoutBooksInput
   reviews: ReviewUpdateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookUpdateWithoutReviewsDataInput {
@@ -370,7 +376,7 @@ input BookUpdateWithoutReviewsDataInput {
   publishDateTime: DateTime
   authors: UserUpdateManyWithoutBooksInput
   ratings: RatingUpdateManyWithoutBookInput
-  isbnNo: Int
+  isbnNo: String
 }
 
 input BookUpdateWithWhereUniqueWithoutAuthorsInput {
@@ -476,14 +482,20 @@ input BookWhereInput {
   reviews_every: ReviewWhereInput
   reviews_some: ReviewWhereInput
   reviews_none: ReviewWhereInput
-  isbnNo: Int
-  isbnNo_not: Int
-  isbnNo_in: [Int!]
-  isbnNo_not_in: [Int!]
-  isbnNo_lt: Int
-  isbnNo_lte: Int
-  isbnNo_gt: Int
-  isbnNo_gte: Int
+  isbnNo: String
+  isbnNo_not: String
+  isbnNo_in: [String!]
+  isbnNo_not_in: [String!]
+  isbnNo_lt: String
+  isbnNo_lte: String
+  isbnNo_gt: String
+  isbnNo_gte: String
+  isbnNo_contains: String
+  isbnNo_not_contains: String
+  isbnNo_starts_with: String
+  isbnNo_not_starts_with: String
+  isbnNo_ends_with: String
+  isbnNo_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
