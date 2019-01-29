@@ -29,6 +29,15 @@ export type UserOrderBy =
   | 'id_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC';
+export type BookOrderBy =
+  | 'title_ASC'
+  | 'title_DESC'
+  | 'description_ASC'
+  | 'description_DESC'
+  | 'isbnNo_ASC'
+  | 'isbnNo_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC';
 
 export namespace QueryResolvers {
   export const defaultResolvers = {};
@@ -45,6 +54,12 @@ export namespace QueryResolvers {
     offset?: number | null;
     limit?: number | null;
   }
+  export interface BookSearchPaginationOrderInput {
+    search?: string | null;
+    orderBy?: Book | null;
+    offset?: number | null;
+    limit?: number | null;
+  }
 
   export interface ArgsGetPublishers {
     sort?: PublisherSearchPaginationOrderInput | null;
@@ -52,6 +67,10 @@ export namespace QueryResolvers {
 
   export interface ArgsGetAuthors {
     sort?: UserSearchPaginationOrderInput | null;
+  }
+
+  export interface ArgsGetBooks {
+    sort?: BookSearchPaginationOrderInput | null;
   }
 
   export type InfoResolver = (
@@ -75,6 +94,13 @@ export namespace QueryResolvers {
     info: GraphQLResolveInfo,
   ) => User[] | Promise<User[]>;
 
+  export type GetBooksResolver = (
+    parent: undefined,
+    args: ArgsGetBooks,
+    ctx: IContext,
+    info: GraphQLResolveInfo,
+  ) => Book[] | Promise<Book[]>;
+
   export interface Type {
     info: (
       parent: undefined,
@@ -96,6 +122,13 @@ export namespace QueryResolvers {
       ctx: IContext,
       info: GraphQLResolveInfo,
     ) => User[] | Promise<User[]>;
+
+    getBooks: (
+      parent: undefined,
+      args: ArgsGetBooks,
+      ctx: IContext,
+      info: GraphQLResolveInfo,
+    ) => Book[] | Promise<Book[]>;
   }
 }
 
