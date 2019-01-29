@@ -11,6 +11,7 @@ type Mutation {
   login(user: LoginInput): AuthResponse!
   createPublisher(publisher: PublisherInput): Publisher!
   createAuthor(user: AuthorInput!): User!
+  createBook(book: BookInput!): Book!
 }
 
 type AuthResponse {
@@ -40,6 +41,16 @@ input AuthorInput {
   firstName: String!
   lastName: String!
   email: String!
+}
+
+input BookInput {
+  title: String!
+  description: String!
+  publishers: [String!]!
+  pages: Int
+  publishDateTime: DateTime!
+  authors: [String!]!
+  isbnNo: String
 }
 
 input PublisherSearchPaginationOrderInput {
@@ -108,7 +119,7 @@ type Book {
   publishDateTime: DateTime!
   authors: [User!]!
   ratings: [Rating!]
-  isbnNo: Int
+  isbnNo: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }

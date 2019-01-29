@@ -287,7 +287,7 @@ export namespace BookResolvers {
     args: {},
     ctx: IContext,
     info: GraphQLResolveInfo,
-  ) => number | null | Promise<number | null>;
+  ) => string | null | Promise<string | null>;
 
   export type CreatedAtResolver = (
     parent: Book,
@@ -365,7 +365,7 @@ export namespace BookResolvers {
       args: {},
       ctx: IContext,
       info: GraphQLResolveInfo,
-    ) => number | null | Promise<number | null>;
+    ) => string | null | Promise<string | null>;
 
     createdAt: (
       parent: Book,
@@ -691,6 +691,15 @@ export namespace MutationResolvers {
     lastName: string;
     email: string;
   }
+  export interface BookInput {
+    title: string;
+    description: string;
+    publishers: string[];
+    pages?: number | null;
+    publishDateTime: string;
+    authors: string[];
+    isbnNo?: string | null;
+  }
 
   export interface ArgsSignup {
     user?: SignupInput | null;
@@ -706,6 +715,10 @@ export namespace MutationResolvers {
 
   export interface ArgsCreateAuthor {
     user: AuthorInput;
+  }
+
+  export interface ArgsCreateBook {
+    book: BookInput;
   }
 
   export type SignupResolver = (
@@ -736,6 +749,13 @@ export namespace MutationResolvers {
     info: GraphQLResolveInfo,
   ) => User | Promise<User>;
 
+  export type CreateBookResolver = (
+    parent: undefined,
+    args: ArgsCreateBook,
+    ctx: IContext,
+    info: GraphQLResolveInfo,
+  ) => Book | Promise<Book>;
+
   export interface Type {
     signup: (
       parent: undefined,
@@ -764,6 +784,13 @@ export namespace MutationResolvers {
       ctx: IContext,
       info: GraphQLResolveInfo,
     ) => User | Promise<User>;
+
+    createBook: (
+      parent: undefined,
+      args: ArgsCreateBook,
+      ctx: IContext,
+      info: GraphQLResolveInfo,
+    ) => Book | Promise<Book>;
   }
 }
 
