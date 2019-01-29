@@ -4,6 +4,7 @@ type Query {
   info: String!
   getPublishers(sort: PublisherSearchPaginationOrderInput): [Publisher!]!
   getAuthors(sort: UserSearchPaginationOrderInput): [User!]!
+  getBooks(sort: BookSearchPaginationOrderInput): [Book!]!
 }
 
 type Mutation {
@@ -67,6 +68,13 @@ input UserSearchPaginationOrderInput {
   limit: Int
 }
 
+input BookSearchPaginationOrderInput {
+  search: String
+  orderBy: BookOrderBy
+  offset: Int
+  limit: Int
+}
+
 enum PublisherOrderBy {
   name_ASC
   name_DESC
@@ -85,6 +93,17 @@ enum UserOrderBy {
   email_DESC
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+enum BookOrderBy {
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  isbnNo_ASC
+  isbnNo_DESC
   createdAt_ASC
   createdAt_DESC
 }
