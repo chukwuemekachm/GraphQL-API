@@ -38,6 +38,11 @@ export type BookOrderBy =
   | 'isbnNo_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC';
+export type ReviewOrderBy =
+  | 'review_ASC'
+  | 'review_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC';
 
 export namespace QueryResolvers {
   export const defaultResolvers = {};
@@ -73,6 +78,10 @@ export namespace QueryResolvers {
     sort?: BookSearchPaginationOrderInput | null;
   }
 
+  export interface ArgsGetReviews {
+    sort?: ReviewOrderBy | null;
+  }
+
   export type InfoResolver = (
     parent: undefined,
     args: {},
@@ -100,6 +109,13 @@ export namespace QueryResolvers {
     ctx: IContext,
     info: GraphQLResolveInfo,
   ) => Book[] | Promise<Book[]>;
+
+  export type GetReviewsResolver = (
+    parent: undefined,
+    args: ArgsGetReviews,
+    ctx: IContext,
+    info: GraphQLResolveInfo,
+  ) => Review[] | Promise<Review[]>;
 
   export interface Type {
     info: (
@@ -129,6 +145,13 @@ export namespace QueryResolvers {
       ctx: IContext,
       info: GraphQLResolveInfo,
     ) => Book[] | Promise<Book[]>;
+
+    getReviews: (
+      parent: undefined,
+      args: ArgsGetReviews,
+      ctx: IContext,
+      info: GraphQLResolveInfo,
+    ) => Review[] | Promise<Review[]>;
   }
 }
 

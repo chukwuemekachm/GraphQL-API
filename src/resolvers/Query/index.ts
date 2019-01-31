@@ -5,6 +5,7 @@ import { IContext } from '../../types/IContext';
 import PublisherQuery from './PublisherQuery';
 import UserQuery from './UserQuery';
 import BookQuery from './BookQuery';
+import ReviewQuery from './ReviewQuery';
 
 const query: QueryResolvers.Type = {
   info: () => 'Welcome to my GraphQL API! 🚀 🚀',
@@ -26,6 +27,12 @@ const query: QueryResolvers.Type = {
     context: IContext,
     info: GraphQLResolveInfo,
   ) => BookQuery.getBooks(parent, args, context, info),
+  getReviews: (
+    parent: undefined,
+    args: any,
+    context: IContext,
+    info: GraphQLResolveInfo,
+  ) => ReviewQuery.getReviews(parent, args, context, info),
 };
 
 export default query;

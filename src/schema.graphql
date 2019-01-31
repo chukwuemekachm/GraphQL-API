@@ -5,6 +5,7 @@ type Query {
   getPublishers(sort: PublisherSearchPaginationOrderInput): [Publisher!]!
   getAuthors(sort: UserSearchPaginationOrderInput): [User!]!
   getBooks(sort: BookSearchPaginationOrderInput): [Book!]!
+  getReviews(sort: ReviewSearchPaginationOrderInput): [Review!]!
 }
 
 type Mutation {
@@ -82,6 +83,13 @@ input BookSearchPaginationOrderInput {
   limit: Int
 }
 
+input ReviewSearchPaginationOrderInput {
+  search: String
+  orderBy: ReviewOrderBy
+  offset: Int
+  limit: Int
+}
+
 enum PublisherOrderBy {
   name_ASC
   name_DESC
@@ -111,6 +119,13 @@ enum BookOrderBy {
   description_DESC
   isbnNo_ASC
   isbnNo_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+enum ReviewOrderBy {
+  review_ASC
+  review_DESC
   createdAt_ASC
   createdAt_DESC
 }
