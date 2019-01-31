@@ -56,7 +56,7 @@ export namespace QueryResolvers {
   }
   export interface BookSearchPaginationOrderInput {
     search?: string | null;
-    orderBy?: Book | null;
+    orderBy?: BookOrderBy | null;
     offset?: number | null;
     limit?: number | null;
   }
@@ -315,6 +315,13 @@ export namespace BookResolvers {
     info: GraphQLResolveInfo,
   ) => Rating[] | null | Promise<Rating[] | null>;
 
+  export type ReviewsResolver = (
+    parent: Book,
+    args: {},
+    ctx: IContext,
+    info: GraphQLResolveInfo,
+  ) => Review[] | Promise<Review[]>;
+
   export type IsbnNoResolver = (
     parent: Book,
     args: {},
@@ -392,6 +399,13 @@ export namespace BookResolvers {
       ctx: IContext,
       info: GraphQLResolveInfo,
     ) => Rating[] | null | Promise<Rating[] | null>;
+
+    reviews: (
+      parent: Book,
+      args: {},
+      ctx: IContext,
+      info: GraphQLResolveInfo,
+    ) => Review[] | Promise<Review[]>;
 
     isbnNo: (
       parent: Book,
@@ -733,6 +747,11 @@ export namespace MutationResolvers {
     authors: string[];
     isbnNo?: string | null;
   }
+  export interface ReviewInput {
+    review: string;
+    reviewer: string;
+    book: string;
+  }
 
   export interface ArgsSignup {
     user?: SignupInput | null;
@@ -752,6 +771,10 @@ export namespace MutationResolvers {
 
   export interface ArgsCreateBook {
     book: BookInput;
+  }
+
+  export interface ArgsCreateReview {
+    review: ReviewInput;
   }
 
   export type SignupResolver = (
@@ -789,6 +812,13 @@ export namespace MutationResolvers {
     info: GraphQLResolveInfo,
   ) => Book | Promise<Book>;
 
+  export type CreateReviewResolver = (
+    parent: undefined,
+    args: ArgsCreateReview,
+    ctx: IContext,
+    info: GraphQLResolveInfo,
+  ) => Review | Promise<Review>;
+
   export interface Type {
     signup: (
       parent: undefined,
@@ -824,6 +854,13 @@ export namespace MutationResolvers {
       ctx: IContext,
       info: GraphQLResolveInfo,
     ) => Book | Promise<Book>;
+
+    createReview: (
+      parent: undefined,
+      args: ArgsCreateReview,
+      ctx: IContext,
+      info: GraphQLResolveInfo,
+    ) => Review | Promise<Review>;
   }
 }
 

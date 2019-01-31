@@ -1,10 +1,12 @@
+import { GraphQLResolveInfo } from 'graphql';
+
 import AuthMutation from './AuthMutation';
 import { IContext } from '../../types/IContext';
 import { MutationResolvers } from '../../types/graphqlgen';
-import { GraphQLResolveInfo } from 'graphql';
 import PublisherMutation from './PublisherMutation';
 import UserMutation from './UserMutation';
 import BookMutation from './BookMutation';
+import ReviewMutation from './ReviewMutation';
 
 const mutation: MutationResolvers.Type = {
   signup: (
@@ -37,6 +39,12 @@ const mutation: MutationResolvers.Type = {
     context: IContext,
     info: GraphQLResolveInfo,
   ) => BookMutation.createBook(parent, args, context, info),
+  createReview: (
+    parent: undefined,
+    args: MutationResolvers.ArgsCreateReview,
+    context: IContext,
+    info: GraphQLResolveInfo,
+  ) => ReviewMutation.createReview(parent, args, context, info),
 };
 
 export default mutation;
