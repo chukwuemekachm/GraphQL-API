@@ -1,5 +1,6 @@
 import { BookResolvers } from '../types/graphqlgen';
 import { Publisher, User, Rating } from '../types/types';
+import { Review } from '../prisma/generated/prisma-client';
 
 export const Book: BookResolvers.Type = {
   ...BookResolvers.defaultResolvers,
@@ -15,5 +16,9 @@ export const Book: BookResolvers.Type = {
   ratings: async ({ id }, args, { prisma }): Promise<Rating[]> => {
     const ratings: Rating[] = prisma.book({ id }).ratings();
     return ratings;
+  },
+  reviews: async ({ id }, args, { prisma }): Promise<Review[]> => {
+    const reviews: Review[] = prisma.book({ id }).reviews();
+    return reviews;
   },
 };

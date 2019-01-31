@@ -53,3 +53,16 @@ export const checkPublishers = async (publishers: string[], prisma: Prisma) => {
     throw err;
   }
 };
+
+/**
+ * @description Capitalizes the first letter of a string
+ * Returning the capitalized string
+ *
+ * @param {string} word The string to be capitalized
+ *
+ * @returns {string}
+ */
+export const capitalize = (word: string): string => {
+  if (!word[1]) return word.toUpperCase();
+  return `${word[0].toUpperCase()}${word.substring(1)}`;
+};

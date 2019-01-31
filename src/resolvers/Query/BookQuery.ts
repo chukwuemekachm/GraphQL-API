@@ -25,8 +25,7 @@ class BookQuery implements IBookQuery {
         OR: [
           { title_contains: search },
           { description_contains: search },
-          { isbnNo: search },
-          { publishDateTime: search },
+          { isbnNo_contains: search },
         ],
       };
 
