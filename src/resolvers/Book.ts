@@ -1,6 +1,10 @@
 import { BookResolvers } from '../types/graphqlgen';
-import { Publisher, User, Rating } from '../types/types';
-import { Review } from '../prisma/generated/prisma-client';
+import {
+  Review,
+  Publisher,
+  User,
+  Rating,
+} from '../prisma/generated/prisma-client';
 
 export const Book: BookResolvers.Type = {
   ...BookResolvers.defaultResolvers,

@@ -1,5 +1,5 @@
 import { PublisherResolvers } from '../types/graphqlgen';
-import { Book } from '../types/types';
+import { Book } from '../prisma/generated/prisma-client';
 
 export const Publisher: PublisherResolvers.Type = {
   ...PublisherResolvers.defaultResolvers,

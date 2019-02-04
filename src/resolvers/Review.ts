@@ -1,5 +1,5 @@
 import { ReviewResolvers } from '../types/graphqlgen';
-import { User, Book } from '../types/types';
+import { User, Book } from '../prisma/generated/prisma-client';
 
 export const Review: ReviewResolvers.Type = {
   ...ReviewResolvers.defaultResolvers,
