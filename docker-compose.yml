@@ -4,7 +4,7 @@ services:
     image: prismagraphql/prisma:1.24
     restart: always
     ports:
-    - "4466:4466"
+    - "${PRISMA_API_PORT}:${PRISMA_API_PORT}"
     environment:
       PRISMA_CONFIG: |
         port: 4466
@@ -13,10 +13,10 @@ services:
         databases:
           default:
             connector: postgres
-            host: host.docker.internal
-            database: prisma_graphql
-            user: postgres
-            password: '123456'
+            host: $DATABASE_HOST
+            database: $DATABASE
+            user: $DATABASE_USER
+            password: $DATABASE_PASSWORD
             rawAccess: true
-            port: '5432'
+            port: $DATABASE_PORT
             migrations: true
