@@ -5,6 +5,7 @@ import { GraphQLError } from 'graphql';
 import { prisma } from './prisma/generated/prisma-client/index';
 import resolvers from './resolvers';
 import errorFormater from './helpers/errorFormater';
+import middlewares from './middlewares';
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -16,14 +17,12 @@ const server = new GraphQLServer({
     request,
     prisma,
   }),
+  middlewares,
 });
 
-server.start(
-  {
-    port: PORT || 4000,
-    endpoint: '/graphql',
-    playground: '/playground',
-    formatError: (error: GraphQLError) => errorFormater(error),
-  },
-  () => console.log(`Server is running on http://localhost:${PORT} 🚀`),
-);
+server.start({
+  port: PORT || 4000,
+  endpoint: '/graphql',
+  playground: '/playground',
+  formatError: (error: GraphQLError) => errorFormater(error),
+});
